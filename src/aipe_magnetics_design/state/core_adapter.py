@@ -72,7 +72,7 @@ def mes_to_core_state(state: MagneticEngineeringState, *, created_at: str, proje
     evidence.append({"id": analytical_id, "kind": "analytical",
                      "description": "Analytical design quantities of the selected candidate (aipe-magnetics MES): "
                                     + "; ".join(f"{k} = {v['value']:.6g} {v['unit']}" for k, v in list(analytical_quantities.items())[:12]),
-                     "source": {"type": "repository", "reference": "https://github.com/FulongLi/AIPE-Magnetics-Design", "locator": state.id},
+                     "source": {"type": "repository", "reference": "https://github.com/AIPE-Labs/AIPE-Magnetics-Design", "locator": state.id},
                      "provenance": {"created_at": created_at, "activity": f"aipe-magnetics {__version__} analytical evaluation",
                                     "inputs": [e["id"] for e in evidence] or [], "tool": tool}})
     if not evidence[-1]["provenance"]["inputs"]:
@@ -138,7 +138,7 @@ def mes_to_core_state(state: MagneticEngineeringState, *, created_at: str, proje
                      **({"description": a.description} if a.description else {})} for a in outs]
         core_state["evidence"].append({"id": sim_id, "kind": "simulation",
                                        "description": f"{solver.domain} {solver.fidelity} by {solver.backend} {solver.version}: {solver.formulation}",
-                                       "source": {"type": "repository", "reference": "https://github.com/FulongLi/AIPE-Magnetics-Design",
+                                       "source": {"type": "repository", "reference": "https://github.com/AIPE-Labs/AIPE-Magnetics-Design",
                                                   "locator": solver.id},
                                        "provenance": {"created_at": created_at, "activity": f"{solver.backend} run recorded in MES {state.id}",
                                                       "inputs": [analytical_id], "tool": {"id": "aipe.magnetics", "name": "AIPE Magnetics",

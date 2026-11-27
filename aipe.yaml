@@ -6,8 +6,8 @@ domains: [power-electronics]
 description: "Evidence-first magnetic component design: consumes AIPE-Magnetics-Database (data standard v0.2), loss and hysteresis models with per-capability verification evidence, inductor/transformer design calculations, local MCP server and standalone Codex / Claude Code plugins."
 status: experimental
 maturity: prototype
-repository: https://github.com/FulongLi/AIPE-Magnetics-Design
-license: NOASSERTION
+repository: https://github.com/AIPE-Labs/AIPE-Magnetics-Design
+license: MIT
 capabilities:
   - magnetics-material-lookup
   - magnetics-material-comparison
@@ -34,7 +34,7 @@ inputs:
     description: "Typed inductor, transformer, core-loss or validation request (aipe_magnetics.api.types) in any registered unit."
   - name: engineering-state
     description: "AIPE-Core Engineering State 0.1.0 whose requirements seed a design request."
-    schema: "https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/engineering-state.schema.json"
+    schema: "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/engineering-state.schema.json"
 outputs:
   - name: engineering-result
     description: "Result envelope aipe.magnetics.result/0.2 with values, units, assumptions, model identity and version, sources, verification status, warnings and limitations."
@@ -46,7 +46,7 @@ outputs:
     description: "Structured magnetic-material measurement requests (aipe.magnetics.measurement-request/0.3): per material and data category the catalogue coverage, test conditions and priority."
   - name: engineering-state
     description: "AIPE-Core Engineering State 0.1.0 fragment (magnetics entry plus evidence) produced by the tested round-trip adapter."
-    schema: "https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/engineering-state.schema.json"
+    schema: "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/engineering-state.schema.json"
 dependencies:
   - {id: aipe.magnetics-database, version: 0.1.x, optional: false}  # Registry contract line (only 0.1.x exists); package: aipe-magnetics-database>=0.3,<0.4
   - {id: aipe.core, version: 0.1.x, optional: true}
@@ -103,8 +103,8 @@ connectors:
   - id: aipe-magnetics-design-mcp
     tool: mcp-python-sdk
     type: mcp
-    repository: https://github.com/FulongLi/AIPE-Magnetics-Design
-    license: NOASSERTION
+    repository: https://github.com/AIPE-Labs/AIPE-Magnetics-Design
+    license: MIT
     status: experimental
     supported_versions: ["mcp>=2,<3 (protocol 2026-07-28)"]
     platforms: [linux, windows, macos]
@@ -131,7 +131,6 @@ validation:
     - "Model implementations are verified against analytical, independent-numerical and published references (L2); no experimental (L3) validation is bundled."
     - "Material and core parameters are datasheet-derived with locators and remain review_status unreviewed until an owner review."
     - "No magnetic datasets are stored in this repository; all data come from AIPE-Magnetics-Database under its per-source licences."
-    - "Repository licence remains NOASSERTION pending owner decision."
 documentation:
   - README.md
   - CHANGELOG.md

@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/converter.schema.json",
+  "$id": "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/converter.schema.json",
   "title": "AIPE Converter",
   "type": "object",
   "properties": {
     "id": {
-      "$ref": "https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/common.schema.json#/$defs/id"
+      "$ref": "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/common.schema.json#/$defs/id"
     },
     "topology": {
       "type": "string",
@@ -31,10 +31,10 @@
       ]
     },
     "evidence_refs": {
-      "$ref": "https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/common.schema.json#/$defs/evidence_refs"
+      "$ref": "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/common.schema.json#/$defs/evidence_refs"
     },
     "extensions": {
-      "$ref": "https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/common.schema.json#/$defs/extensions"
+      "$ref": "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/common.schema.json#/$defs/extensions"
     }
   },
   "required": [

@@ -290,7 +290,7 @@ def evaluate_manifest_schema(manifest_path: Path, manifest: dict[str, Any] | Non
     mutated = copy.deepcopy(manifest)
     mutated.setdefault("compatibility", {})["integration"] = "certified"
     rejected = [item for item in validate_manifest(mutated) if item["severity"] == "error"]
-    notes = [f"Registry commit {REGISTRY_COMMIT}; manifest {manifest_path} id {manifest.get('id')!r} with "
+    notes = [f"Registry commit {REGISTRY_COMMIT}; manifest {manifest_path.name} id {manifest.get('id')!r} with "
              f"{len(manifest.get('capabilities', []))} capabilities and {len(_claimed_levels(manifest))} "
              "verification-level claim(s) (claims are judged by integration.registry-manifest-accepted)."]
     notes.extend(f"error [{item['code']}] {item['message']}" for item in errors)
@@ -324,7 +324,7 @@ def evaluate_manifest_acceptance(manifest_path: Path, evidence_registry: Any | N
     claims = _claimed_levels(manifest)
     would_accept = not errors
     passed = would_accept and not unchecked
-    notes = [f"Registry commit {REGISTRY_COMMIT}; manifest {manifest_path} validated for repository root {repo_root}; "
+    notes = [f"Registry commit {REGISTRY_COMMIT}; manifest {manifest_path.name} validated against its repository root; "
              f"{len(claims)} verification-level claim(s) in extensions.{MAGNETICS_EXTENSION_KEY}.model_maturity."]
     if unchecked:
         notes.append("BLOCKING: verification-level claims could not be cross-checked because no bundled evidence "

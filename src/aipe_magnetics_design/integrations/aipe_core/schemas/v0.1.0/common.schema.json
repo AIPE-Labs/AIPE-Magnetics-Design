@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/common.schema.json",
+  "$id": "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/common.schema.json",
   "title": "AIPE Common",
   "$defs": {
     "id": {
@@ -53,7 +53,7 @@
     "evidence_refs": {
       "type": "array",
       "items": {
-        "$ref": "https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/common.schema.json#/$defs/id"
+        "$ref": "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/common.schema.json#/$defs/id"
       },
       "uniqueItems": true
     },
@@ -65,7 +65,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "$ref": "https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/common.schema.json#/$defs/id"
+          "$ref": "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/common.schema.json#/$defs/id"
         },
         "name": {
           "type": "string",

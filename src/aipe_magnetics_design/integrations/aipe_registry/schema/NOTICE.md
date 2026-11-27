@@ -1,21 +1,21 @@
 # NOTICE: vendored AIPE-Registry capability manifest schema (pinned copy)
 
-Source repository: https://github.com/FulongLi/AIPE-Registry
-Upstream commit: f419260bc604e5e79ecde9d998139a39a5e0ebdf (committed 2026-10-08T16:45:43+01:00)
+Source repository: https://github.com/AIPE-Labs/AIPE-Registry
+Upstream release: v0.1.0, commit 96426e9d4f2e097a53b65fd783cb660be65b8a46 (committed 2026-11-27T20:58:49+00:00)
 Upstream path: `schema/capability-manifest.schema.json`
 Licence: MIT (text reproduced verbatim below from the upstream `LICENSE` file at that commit)
 
-This file is a byte-exact copy of the committed upstream blob (LF line endings, as stored
-in Git) and is pinned for **offline compatibility testing only**. It is not a release of
-AIPE-Registry. `aipe_magnetics.integrations.aipe_registry.manifest` validates `aipe.yaml`
+This file is a byte-exact copy of the blob at the upstream release tag `v0.1.0` (LF line
+endings, as stored in Git), pinned for **offline validation**.
+`aipe_magnetics_design.integrations.aipe_registry.manifest` validates `aipe.yaml`
 against this local copy and re-implements the essential loader and semantic rules of the
 upstream `scripts/registry.py` (MIT) under attribution; it never fetches schemas or URLs. To
-refresh the copy, re-run `git show <commit>:schema/capability-manifest.schema.json` from an
+refresh the copy, re-run `git show <tag>:schema/capability-manifest.schema.json` from an
 AIPE-Registry checkout and update `VENDORED_SHA256` in `manifest.py`.
 
 | File | SHA-256 of vendored bytes |
 | --- | --- |
-| `capability-manifest.schema.json` | `6d0818650937010c12f5b33efcb1adf9246118f80d989ee7d1079fa8e6e24c5a` |
+| `capability-manifest.schema.json` | `2e2ba26420a6d3b0332d2a486bd81b30e77fe69a4e3db5d787c3f89d70a0f6d2` |
 
 ## Upstream LICENSE (MIT), copied verbatim
 

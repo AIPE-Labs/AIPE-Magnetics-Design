@@ -11,7 +11,7 @@ from pydantic import ValidationError
 from aipe_magnetics_database.common.errors import DataIntegrityError, InvalidInputError
 from aipe_magnetics_design.state.model import STATE_SCHEMA, STATE_VERSION, MagneticEngineeringState
 
-SCHEMA_ID = "https://github.com/FulongLi/AIPE-Magnetics-Database/schemas/state/v0.3.0/magnetic-engineering-state.schema.json"
+SCHEMA_ID = "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Magnetics-Design/v0.3.0/schemas/state/v0.3.0/magnetic-engineering-state.schema.json"
 PACKAGED_SCHEMA = Path(__file__).resolve().parents[1] / "schemas" / "state" / "v0.3.0" / "magnetic-engineering-state.schema.json"
 
 

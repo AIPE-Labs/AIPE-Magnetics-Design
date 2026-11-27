@@ -62,7 +62,7 @@ def test_vendored_files_match_pins_and_notice_exists():
     digests = verify_vendored_integrity()
     assert len(digests) == 15 and digests == VENDORED_SHA256
     notice = (SCHEMA_DIR / "NOTICE.md").read_text(encoding="utf-8")
-    assert CORE_COMMIT in notice and "MIT License" in notice and "https://github.com/FulongLi/AIPE-Core" in notice
+    assert CORE_COMMIT in notice and "MIT License" in notice and "https://github.com/AIPE-Labs/AIPE-Core" in notice
     for name, digest in VENDORED_SHA256.items():
         assert digest in notice, name
     assert len(core_schema_ids()) == 14

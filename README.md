@@ -7,7 +7,7 @@ saturation screening, geometry, thermal and FEM helpers, optimisation, verificat
 result is an envelope with values and units, assumptions, model identity, sources, verification level, warnings
 and limitations. Inputs outside a model's domain are rejected, never clipped.
 
-All magnetic data come from **[AIPE-Magnetics-Database](https://github.com/FulongLi/AIPE-Magnetics-Database)**,
+All magnetic data come from **[AIPE-Magnetics-Database](https://github.com/AIPE-Labs/AIPE-Magnetics-Database)**,
 the `aipe-magnetics-database` package. Design is consumed through `aipe_magnetics_design.data_access`. No dataset
 is stored in this repository.
 
@@ -20,8 +20,8 @@ AIPE-Magnetics-Design (models, design, verification, API/CLI/MCP)  -->  AIPE-Mag
 Python 3.10 or newer. Install the Database first; it is not on PyPI yet. Then install Design:
 
 ```sh
-pip install "aipe-magnetics-database @ git+https://github.com/FulongLi/AIPE-Magnetics-Database.git"
-pip install "aipe-magnetics-design[mcp] @ git+https://github.com/FulongLi/AIPE-Magnetics-Design.git"
+pip install "aipe-magnetics-database @ git+https://github.com/AIPE-Labs/AIPE-Magnetics-Database.git@v0.3.0"
+pip install "aipe-magnetics-design[mcp] @ git+https://github.com/AIPE-Labs/AIPE-Magnetics-Design.git@v0.3.0"
 # or, from a checkout: pip install -r requirements.txt
 ```
 
@@ -71,7 +71,7 @@ packages. The CLI name `aipe-magnetics` is kept as an alias. See [docs/migration
 - Version 0.3.0 (`aipe-magnetics-design`). Requires `aipe-magnetics-database>=0.3,<0.4`. Status: prototype.
   Verification levels are recorded per capability ([docs/verification.md](docs/verification.md)).
 - Developer: Fulong Li, Spirit Connect / AIPE Labs.
-- Licence: `NOASSERTION` (not yet declared; [LICENSING.md](LICENSING.md)).
+- Licence: MIT ([LICENSE](LICENSE)). Third-party components and data rights: [LICENSING.md](LICENSING.md).
 - Docs: [architecture](docs/architecture.md), [models](docs/models.md), [API](docs/api.md),
   [waveform-informed design](docs/waveform-informed-design.md), [limitations](docs/limitations.md),
   [CHANGELOG.md](CHANGELOG.md).

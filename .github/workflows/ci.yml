@@ -3,8 +3,12 @@ on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
 
+# Every AIPE dependency is pinned to a tagged release, so a run is reproducible.
 env:
-  DATABASE_REPOSITORY: https://github.com/FulongLi/AIPE-Magnetics-Database.git
+  DATABASE_REQUIREMENT: "aipe-magnetics-database @ git+https://github.com/AIPE-Labs/AIPE-Magnetics-Database.git@v0.3.0"
+  DATABASE_REF: v0.3.0
+  CORE_REF: v0.1.0
+  REGISTRY_REF: v0.1.0
 
 jobs:
   test:
@@ -21,16 +25,10 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
           cache: pip
-      - name: Install AIPE-Magnetics-Database (same-named branch if it exists, else main)
-        shell: bash
+      - name: Install AIPE-Magnetics-Database (tagged release)
         run: |
-          BRANCH="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
-          if git ls-remote --exit-code --heads "$DATABASE_REPOSITORY" "$BRANCH" >/dev/null 2>&1; then REF="$BRANCH";
-          elif git ls-remote --exit-code --heads "$DATABASE_REPOSITORY" feature/database-separation-and-open-data >/dev/null 2>&1; then REF=feature/database-separation-and-open-data;
-          else REF=main; fi
-          echo "Database ref: $REF"
           python -m pip install --upgrade pip
-          python -m pip install "aipe-magnetics-database @ git+${DATABASE_REPOSITORY}@${REF}"
+          python -m pip install "${{ env.DATABASE_REQUIREMENT }}"
       - name: Install package with development extras
         run: python -m pip install -e ".[dev]"
       - name: Unit, model, design, API, MCP, plugin and integration tests
@@ -49,6 +47,29 @@ jobs:
           name: reports-${{ matrix.os }}-py${{ matrix.python }}
           path: reports/
 
+  ecosystem:
+    name: released AIPE-Core / AIPE-Registry validators accept this repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with: {repository: AIPE-Labs/AIPE-Core, ref: '${{ env.CORE_REF }}', path: ecosystem/AIPE-Core}
+      - uses: actions/checkout@v4
+        with: {repository: AIPE-Labs/AIPE-Registry, ref: '${{ env.REGISTRY_REF }}', path: ecosystem/AIPE-Registry}
+      - uses: actions/checkout@v4
+        with: {repository: AIPE-Labs/AIPE-Magnetics-Database, ref: '${{ env.DATABASE_REF }}', path: ecosystem/AIPE-Magnetics-Database}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install "${{ env.DATABASE_REQUIREMENT }}"
+      - run: python -m pip install -e ".[dev]"
+      - name: External tests against the released validators and schemas (must run, not skip)
+        run: |
+          python -m pytest -q -m external tests/integrations -rs | tee external.log
+          ! grep -q "AIPE_ECOSYSTEM_CHECKOUTS not set" external.log
+        env:
+          AIPE_ECOSYSTEM_CHECKOUTS: ${{ github.workspace }}/ecosystem
+
   plugins:
     name: plugin packaging checks
     runs-on: ubuntu-latest
@@ -57,6 +78,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install "aipe-magnetics-database @ git+${DATABASE_REPOSITORY}@feature/database-separation-and-open-data" || python -m pip install "aipe-magnetics-database @ git+${DATABASE_REPOSITORY}@main"
+      - run: python -m pip install "${{ env.DATABASE_REQUIREMENT }}"
       - run: python -m pip install -e ".[dev]"
       - run: python -m pytest -q tests/plugins

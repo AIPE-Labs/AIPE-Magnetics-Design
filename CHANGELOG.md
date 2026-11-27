@@ -1,7 +1,34 @@
 # Changelog
 
 
-## 0.3.0
+## 0.3.0 — 2026-11-27
+
+First tagged release, published from `AIPE-Labs/AIPE-Magnetics-Design`.
+
+### Release preparation
+
+- **Licence: MIT** (`LICENSE`), declared in `pyproject.toml`, `aipe.yaml` and both plugin manifests; it was
+  `NOASSERTION` before. `LICENSING.md` rewritten with a corrected third-party table.
+- Repository address is `AIPE-Labs`. Install commands and CI use the tagged Database release `v0.3.0`.
+- The pinned AIPE-Core schemas and the AIPE-Registry manifest schema are the `v0.1.0` release files (their `$id`
+  now names `AIPE-Labs`). CI runs the released Core and Registry validators against this repository.
+- **Changed behaviour:** a result that carries an `out_of_domain` warning (a model evaluated outside the validity
+  window of its parameter set under `policy="warn"`) reports verification `out_of_range` with
+  `in_verified_range: false`. It used to report `verified`.
+- **Changed behaviour:** `measurement_requests` reports `L0` (no evidence record exists) instead of a hard-coded
+  `L1 verified`.
+- The magnetic engineering state schema `$id` is
+  `https://raw.githubusercontent.com/AIPE-Labs/AIPE-Magnetics-Design/v0.3.0/schemas/state/v0.3.0/...`
+  (it named the Database repository).
+- Bundled verification evidence regenerated in this repository (58 checks, all passing).
+- Tests: the HDF5 import-to-design path runs on a generated file; the tests on the executed converter file read
+  `AIPE_DAB_WAVEFORM_FILE`; a smoke test runs the experimental FEA / thermal / CAD workflow.
+- Documentation corrected where it described the pre-split repository; `docs/review-v0.3.0.md` records the
+  pre-release review and what is left open.
+- The `aipe_magnetics` import name remains a deprecation shim and will be removed in 0.5. Import
+  `aipe_magnetics_design.api`.
+
+### Repository separation
 
 Repository separation: AIPE-Magnetics-Design is the engineering half of the former single
 `aipe-magnetics` 0.2.0 package (AIPE-Magnetics-Database repository).
@@ -21,7 +48,10 @@ Repository separation: AIPE-Magnetics-Design is the engineering half of the form
 - Compatibility: the `aipe_magnetics` import name is provided as a deprecation shim that maps v0.2 module
   paths onto the two new packages (docs/migration-v0.3.md).
 
-## Unreleased — branch `feat/dab-10kw-workflow` (package version stays 0.2.0 until the release step records new evidence)
+## 0.3.0, continued: changes developed on branch `feat/dab-10kw-workflow` after 0.2.0
+
+Written before the repository split, so module paths below still say `aipe_magnetics`; everything listed here is
+part of 0.3.0.
 
 ### Added
 - **Waveform import** (`aipe_magnetics.engineering.waveform_import`): sampled converter waveforms from the AIPE DAB

@@ -1,6 +1,6 @@
 ---
 name: magnetic-material-analysis
-description: Look up, inspect and compare soft magnetic materials (ferrites, powder cores, nanocrystalline, amorphous, steels) from the AIPE Magnetics catalogue - permeability, saturation flux density versus temperature, Curie temperature, Steinmetz parameters, datasheet loss points - and rank candidates for a frequency / flux density / temperature operating point. Use when a user asks which material to use, what a material's parameters are, how two grades compare, or whether a datasheet value is available. Never estimate material data from memory; every number must come from the aipe-magnetics-design tools with its source reference.
+description: Look up, inspect and compare soft magnetic materials from the AIPE Magnetics catalogue (currently MnZn power ferrites such as N87, 3C90, 3C94; other material classes only once the catalogue contains them) - permeability, saturation flux density versus temperature, Curie temperature, Steinmetz parameters, datasheet loss points - and rank candidates for a frequency / flux density / temperature operating point. Use when a user asks which material to use, what a material's parameters are, how two grades compare, or whether a datasheet value is available. Never estimate material data from memory; every number must come from the aipe-magnetics-design tools with its source reference.
 ---
 
 # Magnetic material analysis

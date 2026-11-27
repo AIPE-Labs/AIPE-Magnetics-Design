@@ -16,7 +16,7 @@ Tools: `estimate_core_loss`, `evaluate_hysteresis`, `get_material`, `verificatio
 | square-wave voltage (triangular flux), trapezoidal or PWL flux, no DC bias | `igse` | Venkatachalam et al. 2002; reduces exactly to Steinmetz for sinusoids; ignores DC bias and minor loops (flagged) |
 | laminated / conductive materials, loss separation | `bertotti` | hysteresis + classical eddy + excess terms; requires `model_parameters` {k_h, beta_h, k_c, k_e} in SI (no catalogue material carries them); sinusoidal flux only |
 | hysteresis loop shape, remanence, coercivity, loop energy | n/a - use the tool `evaluate_hysteresis` | Jiles-Atherton, scalar, rate-independent; parameters must be identified per material (an illustrative set is shipped, not a material fit) |
-| trained surrogate (ANN/LSTM/Neural ODE) | not available through `estimate_core_loss` | data-driven inference runs only through the Python adapter API (`aipe_magnetics.models.datadriven`) on the shipped synthetic reference or user-provided weights; `model=` accepts exactly `auto`, `steinmetz`, `igse`, `bertotti` |
+| trained surrogate (ANN/LSTM/Neural ODE) | not available through `estimate_core_loss` | data-driven inference runs only through the Python adapter API (`aipe_magnetics_design.models.datadriven`) on the shipped synthetic reference or user-provided weights; `model=` accepts exactly `auto`, `steinmetz`, `igse`, `bertotti` |
 
 `model="auto"` picks Steinmetz for sinusoidal and iGSE for other waveforms when a parameter set
 covers the operating point; otherwise the call is rejected with the reason.

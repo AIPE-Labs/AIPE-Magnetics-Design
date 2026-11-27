@@ -65,5 +65,5 @@ With several secondaries the tool splits the throughput power equally unless `po
   this - repeat the flag.
 - Verification: quote the level/state of the `verification` block as returned (`L0 unverified` with an
   explicit statement while no bundled evidence file is available; L2 means the loss-model equations were
-  checked against analytical references). The closed-form sizing relations carry no separate evidence
-  record. Results are never measured values.
+  checked against analytical references, and the closed-form sizing relations have their own L2 records;
+  the waveform-informed design has no evidence record yet and reports that). Results are never measured values.

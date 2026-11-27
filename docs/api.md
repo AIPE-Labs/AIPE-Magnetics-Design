@@ -41,7 +41,7 @@ the converter's **actual** winding waveforms. The waveform source (`waveforms`) 
 
 | `kind` | Fields | Notes |
 | --- | --- | --- |
-| `hdf5` | `path`, `channels` (`primary_current` required; `secondary_current`, `primary_voltage`, `magnetising_current` optional), `window` `{t0, t1}`, `time_dataset` (`time`), `channel_group` (`channels`) | AIPE DAB layout: `/time` [s], `/channels/<name>` with `unit` / `description` / `sign_convention` attributes, root attribute `metadata` (JSON; `spec.l_ext`, `l_lk_p`, `l_lk_s`, `n_ratio` give the total series inductance when `series_inductance_total` is omitted). Needs `h5py` (`aipe-magnetics[hdf5]`). |
+| `hdf5` | `path`, `channels` (`primary_current` required; `secondary_current`, `primary_voltage`, `magnetising_current` optional), `window` `{t0, t1}`, `time_dataset` (`time`), `channel_group` (`channels`) | AIPE DAB layout: `/time` [s], `/channels/<name>` with `unit` / `description` / `sign_convention` attributes, root attribute `metadata` (JSON; `spec.l_ext`, `l_lk_p`, `l_lk_s`, `n_ratio` give the total series inductance when `series_inductance_total` is omitted). Needs `h5py` (`aipe-magnetics-design[hdf5]`). |
 | `csv` | `path`, `channels`, `time_column`, `time_unit`, `units` (unit per mapped column), `delimiter`, `window` | units are never inferred from headers |
 | `json` | `path` or inline `document`, `channels`, `window` | `{"time": {"unit", "values"}, "channels": {name: {"unit", "values"}}}` or one uniform period `{"frequency": {...}, "channels": {...}}` |
 | `sps` | `sps`: `power`, `primary_voltage`, `secondary_voltage`, `phase_shift` **or** `series_inductance` | lossless single-phase-shift model (`design/transformers/dab.py`) synthesises the trapezoidal current and the triangular flux |
@@ -107,7 +107,7 @@ aipe-magnetics design waveform-transformer --sps-power "10 kW" --sps-primary-vol
 aipe-magnetics measurement-requests -f "100 kHz" -b "178 mT" -t "100 degC" [--material N87 --material 3C94] [--temperature-range "25 degC" "120 degC"] [--output requests.json]
 aipe-magnetics validate --material N87 --core core.tdk-e65-32-27 --turns 14 -f "100 kHz" --voltage-peak "800 V" -t "100 degC"
 aipe-magnetics report result1.json result2.json --output report.md     # envelopes, JSON reports (results[]) or demo output (steps[].result)
-aipe-magnetics verify --output reports/verification --check-bundled     # exits 1 until the maintainer's bundled evidence file exists
+aipe-magnetics verify --output reports/verification --check-bundled     # exits 1 when a fresh run differs from the bundled evidence
 aipe-magnetics demo dab-10kw --output reports/demo
 aipe-magnetics schema validate <record.json> | migrate <v0.1.json> <v0.2.json> | export <dir> [--check]
 aipe-magnetics import json <source.json> <destination.json> [--migrate]

@@ -5,7 +5,9 @@ hysteresis models (Steinmetz, iGSE, Bertotti, Jiles-Atherton, ODE and data-drive
 design, including waveform-informed DAB transformer design. It also computes winding loss (Dowell and harmonic),
 saturation screening, geometry, thermal and FEM helpers, optimisation, verification evidence and reports. Each
 result is an envelope with values and units, assumptions, model identity, sources, verification level, warnings
-and limitations. Inputs outside a model's domain are rejected, never clipped.
+and limitations. Loss and hysteresis estimates reject inputs outside a model's domain by default; design
+calculations that had to extrapolate say so (`out_of_domain` warning, verification `out_of_range`). Nothing is
+clipped silently.
 
 All magnetic data come from **[AIPE-Magnetics-Database](https://github.com/AIPE-Labs/AIPE-Magnetics-Database)**,
 the `aipe-magnetics-database` package. Design is consumed through `aipe_magnetics_design.data_access`. No dataset

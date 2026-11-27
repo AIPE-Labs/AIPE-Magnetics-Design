@@ -70,3 +70,25 @@ def test_bundle_payload_has_no_wall_clock_and_is_reproducible():
     assert payload == bundle_payload(report)
     built = build_report([])
     assert "duration_s" in built.summary["_totals"] and "duration_s" not in bundle_payload(built)["summary"]["_totals"]
+
+
+def test_extrapolated_result_is_not_reported_as_verified_in_range():
+    """policy='warn' lets a model run outside its parameter-set domain; the verification block must say so."""
+    import aipe_magnetics_design.api as api
+    point = {"material": "N87", "frequency": {"value": 100, "unit": "kHz"}, "temperature": {"value": 100, "unit": "degC"},
+             "waveform": {"kind": "sinusoidal"}}
+    inside = api.estimate_core_loss(**point, flux_density_peak={"value": 150, "unit": "mT"})
+    assert inside.status == "ok" and inside.verification.state == "verified" and inside.verification.in_verified_range is True
+    rejected = api.estimate_core_loss(**point, flux_density_peak={"value": 250, "unit": "mT"})
+    assert rejected.status == "rejected" and rejected.errors[0].code == "out_of_domain"
+    warned = api.estimate_core_loss(**point, flux_density_peak={"value": 250, "unit": "mT"}, policy="warn")
+    assert warned.status == "ok" and any(w.code == "out_of_domain" for w in warned.warnings)
+    assert warned.verification.state == "out_of_range" and warned.verification.in_verified_range is False
+    assert "extrapolation" in warned.verification.statement
+
+
+def test_measurement_requests_claim_no_verification_level_without_evidence():
+    import aipe_magnetics_design.api as api
+    r = api.measurement_requests(materials=["N87"], frequency={"value": 100, "unit": "kHz"}, temperature={"value": 100, "unit": "degC"})
+    assert r.status == "ok", [e.message for e in r.errors]
+    assert r.verification.level == "L0" and r.verification.state != "verified"

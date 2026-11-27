@@ -170,7 +170,7 @@ extensions:
       aipe.magnetics.design_transformer: {family: engineering, maturity: usable, verification: L2}
       aipe.magnetics.design_inductor: {family: engineering, maturity: usable, verification: L2}
       aipe.magnetics.validate_design: {family: engineering, maturity: usable, verification: L2}
-      aipe.magnetics.design_transformer_from_waveforms: {family: engineering, maturity: prototype, notes: "no verification level claimed: pytest-covered (synthetic and executed DAB waveforms) but no evidence record in the bundled registry yet, so results report the sizing as unverified while the iGSE loss model keeps its own status"}
+      aipe.magnetics.design_transformer_from_waveforms: {family: engineering, maturity: prototype, notes: "no verification level claimed: pytest-covered with generated waveforms (synthesised SPS, JSON and an HDF5 file in the converter layout); the test on the executed ngspice file needs that file and is skipped without it but no evidence record in the bundled registry yet, so results report the sizing as unverified while the iGSE loss model keeps its own status"}
       aipe.magnetics.measurement_requests: {family: engineering, maturity: prototype, notes: "no verification level claimed: deterministic catalogue coverage assessment covered by pytest; no physical claim"}
     verification_evidence: [src/aipe_magnetics_design/verification/evidence/v0.3.0.json]
     optional_integrations:

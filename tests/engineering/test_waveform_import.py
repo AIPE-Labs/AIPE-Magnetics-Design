@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 from pathlib import Path
 
 import numpy as np
@@ -13,7 +14,11 @@ from aipe_magnetics_database.common.errors import DataNotFoundError, InvalidInpu
 from aipe_magnetics_database.common.jsonio import sha256_file
 from aipe_magnetics_design.engineering import waveform_import as wi
 
-REAL_FILE = Path("D:/Cursor Workspace/AIPE-Full-Ecosystem-Integration/runs/dab-l1-nominal-ic/waveforms.h5")
+#: Optional: the executed ngspice DAB run (AIPE-Workflows, runs/dab-l1-nominal-ic/waveforms.h5). It is not in this repository;
+#: point AIPE_DAB_WAVEFORM_FILE at a copy to run the test below. Everything else here uses generated inputs.
+REAL_FILE_ENV = "AIPE_DAB_WAVEFORM_FILE"
+REAL_FILE = Path(os.environ[REAL_FILE_ENV]) if os.environ.get(REAL_FILE_ENV) else None
+REAL_FILE_SKIP = f"{REAL_FILE_ENV} is not set (path of the executed ngspice DAB waveform file, which is not stored in this repository)"
 F_SW = 100e3
 
 
@@ -155,7 +160,8 @@ def test_flux_linkage_from_square_voltage_matches_faraday():
         wi.flux_density_breakpoints(pl, 0, 535e-6)
 
 
-@pytest.mark.skipif(not REAL_FILE.exists(), reason=f"executed DAB waveform file not present: {REAL_FILE}")
+@pytest.mark.external
+@pytest.mark.skipif(REAL_FILE is None, reason=REAL_FILE_SKIP)
 def test_real_dab_waveform_file_reproduces_the_published_metrics():
     pytest.importorskip("h5py", reason="the HDF5 waveform loader needs h5py (aipe-magnetics[hdf5])")
     ws = wi.load_waveforms_hdf5(REAL_FILE, channels=["i_L", "i_s", "v_tp"], window=(200e-6, 240e-6))

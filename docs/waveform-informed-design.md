@@ -51,7 +51,11 @@ design whose analytical evidence lists the waveform source evidence (file path, 
 ## Executed example: 10 kW DAB, 800 V : 400 V, 100 kHz, SPS, phi = 22.5 deg, L_total = 35 uH
 
 Source: `runs/dab-l1-nominal-ic/waveforms.h5` (ngspice level-1 run, 24 cycles; window 200-240 us; last period
-230-240 us; 490 breakpoints per period). Request: `turns_ratio_target 2`, N87 (the only catalogue material with Bsat
+230-240 us; 490 breakpoints per period). That file belongs to the converter simulation run and is **not stored in this
+repository**, so the table below cannot be regenerated from this repository alone. The test suite reproduces the same
+design from an HDF5 file in the same layout generated from the analytical SPS model (ideal waveforms, losses within
+about 0.1 W of the table); set `AIPE_DAB_WAVEFORM_FILE` to a copy of the executed file to run the two tests that
+check its numbers. Request: `turns_ratio_target 2`, N87 (the only catalogue material with Bsat
 data **and** a 100 degC loss set that is offered in a catalogue core), design temperature 100 degC, flux limit
 70 % Bsat, loss ceiling 300 kW/m^3, litz 0.1 mm strands at 4 A/mm^2, arrangements P-S and P-S-P, forced convection
 40 W/m^2/K at 40 degC, hot-spot limits 120 degC (winding) / 110 degC (core).
@@ -97,8 +101,8 @@ measurement requests list as high-priority gaps.
   idealisations of the source simulation carry over.
 * The capability has no evidence record in the bundled verification registry yet, so results report `L0 unverified`
   for the sizing relations (the iGSE loss model keeps its own L2 status in `data.loss_model_verification`); the
-  pytest suite covers the loader, the SPS model against the executed run, the Dowell / leakage building blocks and
-  the end-to-end design. Recording evidence requires the maintainer's `verify --update-bundled` release step.
+  pytest suite covers the loader, the Dowell / leakage building blocks and the end-to-end design on generated
+  inputs; the comparison of the SPS model against the executed run needs the external file named above. Recording evidence requires the maintainer's `verify --update-bundled` release step.
 * No hardware was built or measured.
 
 ## Measurement requests

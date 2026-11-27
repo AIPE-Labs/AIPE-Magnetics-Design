@@ -68,7 +68,7 @@ twenty modules.
 
 ### 3. Database checks live in the Design verification suite
 
-`verification/checks/check_data.py` and `check_sources.py` (781 lines, 2 of the 14 capability groups) test the
+`verification/checks/check_data.py` and `check_sources.py` (781 lines) test the
 Database package from inside Design. Two of their records pass vacuously here because the files they compare
 are in the Database repository (`mirror_compared: false`, `repository_examples: 0`). Proposal: move both
 modules to AIPE-Magnetics-Database and regenerate the evidence in both repositories. Not done now because it

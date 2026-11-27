@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 from pathlib import Path
 
 import numpy as np
@@ -20,7 +21,10 @@ from aipe_magnetics_design.engineering.periodic import PiecewiseLinear
 from aipe_magnetics_design.geometry.conductors import ConductorSpec, litz_for_area
 from aipe_magnetics_design.integrations.aipe_core.state import validate_engineering_state
 
-REAL_FILE = Path("D:/Cursor Workspace/AIPE-Full-Ecosystem-Integration/runs/dab-l1-nominal-ic/waveforms.h5")
+#: Optional: the executed ngspice DAB run (AIPE-Workflows, runs/dab-l1-nominal-ic/waveforms.h5); see tests/engineering/test_waveform_import.py.
+REAL_FILE_ENV = "AIPE_DAB_WAVEFORM_FILE"
+REAL_FILE = Path(os.environ[REAL_FILE_ENV]) if os.environ.get(REAL_FILE_ENV) else None
+REAL_FILE_SKIP = f"{REAL_FILE_ENV} is not set (path of the executed ngspice DAB waveform file, which is not stored in this repository)"
 KHZ100 = {"value": 100, "unit": "kHz"}
 CREATED = "2026-10-21T12:00:00Z"
 SPS = {"kind": "sps", "sps": {"power": {"value": 10, "unit": "kW"}, "primary_voltage": {"value": 800, "unit": "V"},
@@ -216,9 +220,64 @@ def test_flux_shape_normalisation_and_excitation_description_are_consistent():
 
 
 # -------------------------------------------------------------------------------------------------
-# the executed ngspice waveform file (skipped when absent)
+# HDF5 file in the converter-waveform layout, generated from the analytical SPS model (runs everywhere)
 # -------------------------------------------------------------------------------------------------
-@pytest.mark.skipif(not REAL_FILE.exists(), reason=f"executed DAB waveform file not present: {REAL_FILE}")
+def _write_generated_dab_hdf5(path: Path) -> Path:
+    """24 periods of the ideal SPS waveforms of the 10 kW example in the /time + /channels/<name> layout the simulator writes."""
+    import h5py
+    f_sw, n, l_series, l_m, v1 = 100e3, 2.0, 35e-6, 1e-3, 800.0
+    phi = dab.phase_shift_for_power(10e3, v1, 800.0, 1.0, f_sw, l_series)
+    t = np.arange(0, 24 * 1000 + 1) * 1e-8  # 10 ns step, 1000 samples per period
+    x = t * f_sw
+    i_l = dab.inductor_current(v1, 800.0, 1.0, f_sw, l_series, phi).value(x)
+    v_tp = v1 * np.where(np.mod(x + 1e-9, 1.0) < 0.5, 1.0, -1.0)
+    i_m = v1 / l_m * (np.abs(np.mod(x, 1.0) - 0.5) * -2 + 0.5) / (2 * f_sw)  # triangle, zero mean, peak V/(4 f Lm)
+    with h5py.File(path, "w") as handle:
+        handle.attrs["metadata"] = json.dumps({"spec": {"f_sw": f_sw, "n_ratio": n, "l_ext": l_series, "l_lk_p": 0.0, "l_lk_s": 0.0, "l_m": l_m},
+                                               "generator": "analytical SPS model (tests), not a circuit simulation"})
+        handle.create_dataset("time", data=t * 1e6).attrs["unit"] = "us"
+        group = handle.create_group("channels")
+        for name, values, unit in (("i_L", i_l, "A"), ("i_s", n * i_l, "A"), ("v_tp", v_tp, "V"), ("i_m", i_m, "A")):
+            group.create_dataset(name, data=values).attrs["unit"] = unit
+    return path
+
+
+def test_design_from_a_generated_hdf5_file_matches_the_synthesised_sps_design(tmp_path, sps_result):
+    """File import -> period detection -> flux from the voltage channel -> ranked design -> Core state, on an input anyone can regenerate."""
+    pytest.importorskip("h5py", reason="the HDF5 waveform loader needs h5py (aipe-magnetics-design[hdf5])")
+    source = _write_generated_dab_hdf5(tmp_path / "waveforms.h5")
+    r = api.design_transformer_from_waveforms(
+        frequency=KHZ100, turns_ratio_target=2.0, loss_density_target={"value": 300, "unit": "kW/m^3"}, max_candidates=20, materials=["N87"],
+        waveforms={"kind": "hdf5", "path": str(source), "channels": {"primary_current": "i_L", "secondary_current": "i_s", "primary_voltage": "v_tp",
+                                                                     "magnetising_current": "i_m"},
+                   "window": {"t0": {"value": 200, "unit": "us"}, "t1": {"value": 240, "unit": "us"}}},
+        created_at=CREATED, export_state=True)
+    assert r.status == "ok", [e.message for e in r.errors]
+    ex, reference = r.data["excitation"], sps_result.data["excitation"]
+    assert ex["basis"] == "imported" and ex["flux_basis"] == "integral_of_voltage_channel" and ex["secondary_basis"] == "imported"
+    assert ex["period_detection"]["periodicity"] > 0.999
+    # the imported excitation equals the synthesised one it was generated from
+    assert ex["primary_current"]["rms"] == pytest.approx(reference["primary_current"]["rms"], rel=2e-3)
+    assert ex["secondary_current"]["rms"] == pytest.approx(reference["secondary_current"]["rms"], rel=2e-3)
+    assert ex["flux_linkage_peak_to_peak_Vs"] == pytest.approx(reference["flux_linkage_peak_to_peak_Vs"], rel=2e-3)
+    assert ex["series_inductance_total_H"] == pytest.approx(35e-6)
+    # ... and so does the design: same demo candidate, same flux density and core loss
+    c = _candidate(r, "core.tdk-e65-32-27", (21, 10), "P-S-P")
+    c_ref = _candidate(sps_result, "core.tdk-e65-32-27", (21, 10), "P-S-P")
+    assert c["flux_density_peak_T"] == pytest.approx(c_ref["flux_density_peak_T"], rel=2e-3)
+    assert c["core_loss_W"] == pytest.approx(c_ref["core_loss_W"], rel=0.01)
+    # the file is recorded as evidence by content hash and the exported state is contract-valid
+    state = r.data["engineering_state"]
+    assert validate_engineering_state(state) == []
+    wave = next(e for e in state["evidence"] if e["id"].endswith("waveform-source"))
+    assert wave["artifacts"][0]["sha256"] == sha256_file(source) == ex["source"]["sha256"]
+
+
+# -------------------------------------------------------------------------------------------------
+# the executed ngspice waveform file (optional: set AIPE_DAB_WAVEFORM_FILE)
+# -------------------------------------------------------------------------------------------------
+@pytest.mark.external
+@pytest.mark.skipif(REAL_FILE is None, reason=REAL_FILE_SKIP)
 def test_design_from_the_executed_dab_waveform_file():
     pytest.importorskip("h5py", reason="the HDF5 waveform loader needs h5py (aipe-magnetics[hdf5])")
     r = api.design_transformer_from_waveforms(

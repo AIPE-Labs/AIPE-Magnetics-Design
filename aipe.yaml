@@ -31,7 +31,7 @@ inputs:
   - name: converter-waveforms
     description: "Sampled converter winding waveforms (AIPE DAB HDF5 layout /time + /channels/<name> with unit attributes, CSV with explicit units, or JSON) used as the excitation of the waveform-informed transformer design; SHA-256 of the file is recorded as evidence."
   - name: design-request
-    description: "Typed inductor, transformer, core-loss or validation request (aipe_magnetics.api.types) in any registered unit."
+    description: "Typed inductor, transformer, core-loss or validation request (aipe_magnetics_design.api.types) in any registered unit."
   - name: engineering-state
     description: "AIPE-Core Engineering State 0.1.0 whose requirements seed a design request."
     schema: "https://raw.githubusercontent.com/AIPE-Labs/AIPE-Core/v0.1.0/schemas/engineering-state.schema.json"
@@ -137,6 +137,7 @@ documentation:
   - docs/architecture.md
   - docs/audit-v0.1.md
   - docs/migration-v0.3.md
+  - docs/review-v0.3.0.md
   - docs/models.md
   - docs/verification.md
   - docs/api.md
@@ -153,7 +154,7 @@ extensions:
     python: ">=3.10"
     runtime_requirements:
       required: [aipe-magnetics-database, numpy, scipy, pydantic, jsonschema, referencing, PyYAML]
-      optional: {hdf5: [h5py], mcp: [mcp], torch: [torch], magnethub: [magnethub], viz: [matplotlib], mesh: [gmsh], cad: [cadquery]}
+      optional: {hdf5: [h5py], mcp: [mcp], torch: [torch], viz: [matplotlib], mesh: [gmsh], cad: [cadquery]}
     interfaces:
       python_api: aipe_magnetics_design.api
       cli: aipe-magnetics-design

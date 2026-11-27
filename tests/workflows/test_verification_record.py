@@ -40,3 +40,20 @@ def test_workflow_requires_a_caller_supplied_timestamp(tmp_path):
     assert WorkflowOptions().created_at is None
     with pytest.raises(InvalidInputError, match="created_at"):
         run_dab_workflow(tmp_path, options=WorkflowOptions())
+
+
+def test_default_dab_workflow_runs_end_to_end_without_optional_tools(tmp_path):
+    """Smoke test of the experimental FEA / thermal / CAD workflow layer: the only test that executes it.
+
+    It shows that the default 10 kW DAB specification runs from the database selection to a selected candidate and
+    written artifacts with the built-in structured mesher (no gmsh, cadquery or matplotlib). It does not check the
+    field or thermal numbers against any reference.
+    """
+    result = run_dab_workflow(tmp_path, options=WorkflowOptions(created_at="2026-11-27T00:00:00Z"))
+    # "ok_with_warnings" when an optional tool (e.g. matplotlib for the plots) is not installed; nothing else may be reported
+    assert result.status in ("ok", "ok_with_warnings"), result.errors
+    assert all("is not installed" in message for message in result.errors), result.errors
+    assert result.summary["feasible"] is True and result.summary["params"]["core"] == "core.tdk-e65-32-27"
+    written = [p for p in tmp_path.rglob("*") if p.is_file()]
+    assert any(p.name == "spec.json" for p in written) and any(p.name == "database-selection.json" for p in written)
+    assert len(written) > 10

@@ -12,11 +12,11 @@ function) and per operating range, at three levels:
 ## How it works
 
 * Checks are plain functions registered with `@check(...)` in
-  `aipe_magnetics/verification/checks/check_*.py`. Each declares its capability id, level, kind,
+  `src/aipe_magnetics_design/verification/checks/check_*.py`. Each declares its capability id, level, kind,
   method, optional operating range and reference, and returns a `CheckResult(passed, metrics, notes)`.
 * `aipe-magnetics verify --output reports/verification` runs every check and writes
   `verification-report.json` (machine-readable `EvidenceRecord`s) and `verification-report.md`.
-* The **bundled evidence file** `src/aipe_magnetics_design/verification/evidence/v0.2.0.json` is produced by
+* The **bundled evidence file** `src/aipe_magnetics_design/verification/evidence/v0.3.0.json` is produced by
   `aipe-magnetics verify --update-bundled` before a release and compared against a fresh run by
   `--check-bundled` (CI). Every API result derives its `verification` block from this file for the
   requested conditions: `verified` (passing L2/L3 evidence covers the conditions),
@@ -24,12 +24,17 @@ function) and per operating range, at three levels:
   `unverified` (no evidence), `failed` (failing evidence exists). A condition that is *not supplied* for a
   declared range dimension makes the range undecidable (`in_verified_range: null`, the statement names
   the unchecked dimension); only a supplied condition outside a declared range yields `out_of_range`.
-* The bundled file is produced by the maintainer's release step (`--update-bundled` on a green suite).
-  Until it is committed the API does not pretend otherwise: every model-based result reports
-  `L0 unverified` with a statement naming the missing file,
-  `aipe-magnetics info` prints `verification evidence: MISSING`, `verification_status()` warns
-  `bundled_evidence_missing`, `verify --check-bundled` exits 1, and the Registry acceptance check
-  `integration.registry-manifest-accepted` fails closed.
+* The bundled file for 0.3.0 is committed (58 checks, all passing) and CI compares it with a fresh run on
+  every push. If the file for the installed version were missing, the API would not pretend otherwise: every
+  model-based result would report `L0 unverified` with a statement naming the missing file, `info` would print
+  `verification evidence: MISSING`, `verify --check-bundled` would exit 1 and the Registry acceptance check
+  `integration.registry-manifest-accepted` would fail closed.
+* The registry judges the *model implementation* at the requested conditions. When a model was run outside the
+  validity window of its *parameter set* under `policy="warn"`, the API additionally sets the block to
+  `out_of_range` / `in_verified_range: false`, because the value is an extrapolation.
+* Two records (`data.schema-mirror-in-sync`, `data.v01-examples-migrate-and-validate`) are Database checks
+  carried over from before the repository split. In this repository they only compare packaged files
+  (`mirror_compared: false`, `repository_examples: 0`); see `docs/review-v0.3.0.md`.
 * `pytest` executes the same check functions, so a failing check fails the test suite.
 
 ## Model declarations

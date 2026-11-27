@@ -284,9 +284,11 @@ def measurement_requests(spec: MeasurementRequestSpec, catalog: Any | None = Non
                  "appears as missing.")
     result.limit("not_a_test_plan", "Test conditions are proposals derived from the excitation; sample sizes, fixtures and acceptance criteria must be "
                  "defined by the measuring laboratory.")
-    result.verification.level = "L1"
-    result.verification.state = "verified"
-    result.verification.statement = "Deterministic coverage assessment of schema-validated catalogue records (L1); no physical claim."
+    # no evidence record exists for this capability: report what the registry says instead of a hard-coded level
+    from aipe_magnetics_design.engineering._verification import capability_status
+    result.verification = capability_status(None, CAP_MEASUREMENT_REQUESTS)
+    result.verification.statement = ("Deterministic coverage assessment of schema-validated catalogue records; no physical claim. "
+                                     + (result.verification.statement or ""))
     return result
 
 

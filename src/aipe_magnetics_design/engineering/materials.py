@@ -17,7 +17,6 @@ from aipe_magnetics_database.data.records import ConditionedValue, MagneticRecor
 from aipe_magnetics_database.database.materials import (
     CAP_GET,
     CAP_LIST,
-    _catalog,
     evidence_sources,
     get_material,
     list_materials,
@@ -115,7 +114,7 @@ def compare_materials(materials: list[str], frequency: Quantity | None = None, f
 
 
 __all__ = [
-    "CAP_COMPARE", "CAP_GET", "CAP_LIST", "ConditionedValue", "MagneticRecord", "MaterialProperties", "SourceReference", "_catalog",
+    "CAP_COMPARE", "CAP_GET", "CAP_LIST", "ConditionedValue", "MagneticRecord", "MaterialProperties", "SourceReference",
     "compare_materials", "evidence_sources", "get_material", "list_materials", "lookup_material", "material_summary",
     "saturation_flux_density_at",
 ]

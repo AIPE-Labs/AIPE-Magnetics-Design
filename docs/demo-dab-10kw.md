@@ -71,9 +71,7 @@ manufacturing analysis was run. The report separates **calculated** values (turn
 Faraday's law), **model estimates** (core loss from iGSE with datasheet-fitted Steinmetz parameters,
 copper loss from Dowell's model) and **assumptions** (currents, fill factor, current density, flux
 limit), and prints the verification status of each capability as derived from the bundled evidence
-registry: `L0 unverified` with a statement naming the missing file while the release evidence file
-`src/aipe_magnetics_design/verification/evidence/v0.2.0.json` has not been recorded by the maintainer's release
-step, L1/L2 per capability once it has. The zero-DC-bias assumption is recorded as `zero_dc_bias` in the
+registry (`src/aipe_magnetics_design/verification/evidence/v0.3.0.json`): L1/L2 per capability. The zero-DC-bias assumption is recorded as `zero_dc_bias` in the
 design result.
 
 ## Result summary of the release run
@@ -92,5 +90,5 @@ Output of the release run ([demo-dab-10kw-report.md](demo-dab-10kw-report.md), s
 
 Other candidates: E 70/33/32 44.8 W, PM 87/70 44.9 W; ETD 59/31/22 rejected (window fill 0.51 > 0.40);
 UU 93/152/30 not evaluable (no mean turn length / window area in the datasheet record). See
-[release-verification-v0.2.0.md](release-verification-v0.2.0.md) for the record of what was executed for
+[release-verification-v0.3.0.md](release-verification-v0.3.0.md) for the record of what was executed for
 the release. Values are analytical design estimates with stated assumptions; no hardware was built or measured.

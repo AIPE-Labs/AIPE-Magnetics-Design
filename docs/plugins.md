@@ -1,8 +1,8 @@
 # Codex and Claude Code plugins
 
 > 0.3: the design plugin is `aipe-magnetics-design` (this repository). The data-only plugin `aipe-magnetics-database`
-> lives in AIPE-Magnetics-Database; install both for data lookup plus design. Release-time host runs recorded below
-> refer to 0.2.0.
+> lives in AIPE-Magnetics-Database; install both for data lookup plus design. No host run (`claude plugin validate`, Codex installation) has been
+> recorded for 0.3.0; the structural checks in `tests/plugins` pass.
 
 Both plugins are thin: they ship the same five skills and the same `.mcp.json` that starts the
 local `aipe-magnetics-design` MCP server. **All engineering numbers come from the Python engine**; the
@@ -41,28 +41,28 @@ absolute interpreter path (e.g. `C:\\venvs\\aipe\\Scripts\\python.exe` or `/opt/
 ## 2. Claude Code
 
 ```text
-/plugin marketplace add AIPE-Labs/AIPE-Magnetics-Database        # GitHub default branch: works once v0.2 is merged ...
-/plugin marketplace add /path/to/AIPE-Magnetics-Database         # ... until then use a local checkout of the feature branch
-/plugin install aipe-magnetics@aipe-magnetics                    # opens the details panel; choose a scope
+/plugin marketplace add AIPE-Labs/AIPE-Magnetics-Design        # from GitHub
+/plugin marketplace add /path/to/AIPE-Magnetics-Design         # or from a local checkout
+/plugin install aipe-magnetics-design@aipe-magnetics-design                    # opens the details panel; choose a scope
 ```
 
 Shell equivalents: `claude plugin marketplace add <source>`, `claude plugin install
-aipe-magnetics@aipe-magnetics --scope user|project|local`. For a one-session test without a
+aipe-magnetics-design@aipe-magnetics-design --scope user|project|local`. For a one-session test without a
 marketplace: `claude --plugin-dir plugins/claude/aipe-magnetics-design`.
 
-Use: `/aipe-magnetics:transformer-design`, `/aipe-magnetics:magnetic-material-analysis`, ... or just
+Use: `/aipe-magnetics-design:transformer-design`, `/aipe-magnetics-design:magnetic-material-analysis`, ... or just
 ask ("compare N87 and 3C94 at 100 kHz, 150 mT, 90 degC"); Claude invokes the matching skill and the
 MCP tools `list_materials`, `compare_materials`, `estimate_core_loss`, `design_transformer`, ...
 
 Uninstall / disable:
 
 ```sh
-claude plugin disable aipe-magnetics
-claude plugin uninstall aipe-magnetics            # add --scope project|local if installed there
-claude plugin marketplace remove aipe-magnetics
+claude plugin disable aipe-magnetics-design
+claude plugin uninstall aipe-magnetics-design            # add --scope project|local if installed there
+claude plugin marketplace remove aipe-magnetics-design
 ```
 
-Cache locations: `~/.claude/plugins/cache/aipe-magnetics/aipe-magnetics/<version>/`
+Cache locations: `~/.claude/plugins/cache/aipe-magnetics-design/aipe-magnetics-design/<version>/`
 (`${CLAUDE_PLUGIN_ROOT}`), marketplaces under `~/.claude/plugins/marketplaces/`.
 
 ## 3. OpenAI Codex
@@ -71,22 +71,22 @@ Plugins are supported in Codex CLI (`/plugins` browser) and Codex in the ChatGPT
 IDE extension does not load plugins but does load standalone skills (see below).
 
 ```sh
-codex plugin marketplace add https://github.com/AIPE-Labs/AIPE-Magnetics-Database   # or a local path
-codex plugin add aipe-magnetics@aipe-magnetics
-codex mcp list                      # shows aipe-magnetics (launched from the plugin)
+codex plugin marketplace add https://github.com/AIPE-Labs/AIPE-Magnetics-Design   # or a local path
+codex plugin add aipe-magnetics-design@aipe-magnetics-design
+codex mcp list                      # shows aipe-magnetics-design (launched from the plugin)
 ```
 
 Start a new Codex session; invoke skills with `$transformer-design`, `$magnetic-loss-modelling`,
 ... or let Codex pick them from their descriptions. `config.toml` gains
-`[marketplaces.aipe-magnetics]` and `[plugins."aipe-magnetics@aipe-magnetics"] enabled = true`; the
-plugin is copied to `~/.codex/plugins/cache/aipe-magnetics/aipe-magnetics/<version>/`.
+`[marketplaces.aipe-magnetics-design]` and `[plugins."aipe-magnetics-design@aipe-magnetics-design"] enabled = true`; the
+plugin is copied to `~/.codex/plugins/cache/aipe-magnetics-design/aipe-magnetics-design/<version>/`.
 
 Uninstall / disable:
 
 ```sh
-codex plugin remove aipe-magnetics@aipe-magnetics
-codex plugin marketplace remove aipe-magnetics
-# or keep it installed but disabled: [plugins."aipe-magnetics@aipe-magnetics"] enabled = false
+codex plugin remove aipe-magnetics-design@aipe-magnetics-design
+codex plugin marketplace remove aipe-magnetics-design
+# or keep it installed but disabled: [plugins."aipe-magnetics-design@aipe-magnetics-design"] enabled = false
 ```
 
 Standalone skills (IDE extension, or without the plugin system): copy `skills/*` into
@@ -94,17 +94,17 @@ Standalone skills (IDE extension, or without the plugin system): copy `skills/*`
 manually:
 
 ```sh
-codex mcp add aipe-magnetics -- python -m aipe_magnetics_design.mcp.server
+codex mcp add aipe-magnetics-design -- python -m aipe_magnetics_design.mcp.server
 ```
 
 ## 4. Troubleshooting
 
 | Symptom | Check |
 | --- | --- |
-| MCP server does not start / tools missing | `python -m aipe_magnetics_design.mcp.server --self-test` in a terminal. `ModuleNotFoundError: mcp` → `pip install "aipe-magnetics[mcp]"`. Wrong interpreter → set the absolute path in `.mcp.json`. |
+| MCP server does not start / tools missing | `python -m aipe_magnetics_design.mcp.server --self-test` in a terminal. `ModuleNotFoundError: mcp` → `pip install "aipe-magnetics-design[mcp]"`. Wrong interpreter → set the absolute path in `.mcp.json`. |
 | Host says the plugin failed to load | `claude plugin validate plugins/claude/aipe-magnetics-design` (add `--strict` on Claude Code ≥ 2.1.233); `codex doctor`. The manifest must stay inside `.claude-plugin/` / `.codex-plugin/`; skills and `.mcp.json` at the plugin root. |
-| Skill does not trigger | Invoke it explicitly (`/aipe-magnetics:<skill>` or `$<skill>`); start a new session after installing. |
-| `out_of_range` or `rejected` results | Not a plugin problem: the engine refuses to extrapolate outside the material parameter-set ranges. Read the `errors`/`limitations` fields. |
+| Skill does not trigger | Invoke it explicitly (`/aipe-magnetics-design:<skill>` or `$<skill>`); start a new session after installing. |
+| `out_of_range` or `rejected` results | Not a plugin problem: loss and hysteresis estimates refuse to extrapolate outside the material parameter-set ranges by default; design and validation results that had to extrapolate say so (`out_of_range`, `out_of_domain` warning). Read the `errors`/`limitations` fields. |
 | Writing a report file is refused | By design: start the server with `AIPE_MAGNETICS_MCP_ALLOW_WRITE=1` (or `--allow-write --output-dir <dir>`) and pass an explicit `output_path` inside that directory. |
 | Windows path issues | Use forward slashes or escaped backslashes in `.mcp.json`; the server itself uses `pathlib`. |
 

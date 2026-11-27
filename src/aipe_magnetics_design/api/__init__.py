@@ -88,9 +88,27 @@ def _coerce(model: type[BaseModel], request: Any, kwargs: dict[str, Any]) -> Bas
             f"{'.'.join(str(p) for p in e['loc'])}: {e['msg']}" for e in error.errors())) from None
 
 
+_EXTRAPOLATION_NOTE = (" A model was evaluated outside the validity domain of its parameter set (policy 'warn', see the "
+                       "out_of_domain warning): the affected values are extrapolations that this evidence does not cover.")
+
+
+def _flag_extrapolation(result: EngineeringResult) -> EngineeringResult:
+    """A result that carries an ``out_of_domain`` warning must not read as verified in range.
+
+    The evidence registry judges the *model implementation* at the operating point; it does not know that the
+    parameter set was extrapolated under ``policy="warn"``. Without this step such a result reported
+    ``verified`` / ``in_verified_range=True`` next to the warning.
+    """
+    if any(w.code == "out_of_domain" for w in result.warnings) and result.verification.state in ("verified", "partially_verified"):
+        result.verification.state = "out_of_range"
+        result.verification.in_verified_range = False
+        result.verification.statement = (result.verification.statement or "") + _EXTRAPOLATION_NOTE
+    return result
+
+
 def _guard(capability: str, func: Callable[[], EngineeringResult], inputs: dict[str, Any] | None = None) -> EngineeringResult:
     try:
-        return func()
+        return _flag_extrapolation(func())
     except AIPEMagneticsError as error:
         return EngineeringResult.rejected(capability, error, inputs=inputs)
 

@@ -11,9 +11,19 @@ from typing import Any, Literal
 from aipe_magnetics_database.common.errors import AIPEMagneticsError, InvalidInputError
 from aipe_magnetics_database.common.quantity import Quantity
 from aipe_magnetics_database.common.results import EngineeringResult
-from aipe_magnetics_database.database.query import _q
+from aipe_magnetics_database.common.units import units
 
 CAP_MATERIAL_LOSS = "aipe.magnetics.database.estimate_material_loss"
+
+
+def _q(value: Any, unit: str, name: str) -> float | None:
+    """Optional quantity as a float in ``unit`` (dimension-checked); no private Database helper is imported for this."""
+    if value is None:
+        return None
+    q = Quantity.parse(value, name=name)
+    if not units.compatible(q.unit, unit):
+        raise InvalidInputError(f"{name} must have the dimension of {unit!r}, got {q.unit!r}")
+    return q.magnitude(unit)
 
 
 def estimate_material_loss(material: str, frequency: Any, flux_density_peak: Any, temperature: Any, *, waveform: str = "sinusoidal",

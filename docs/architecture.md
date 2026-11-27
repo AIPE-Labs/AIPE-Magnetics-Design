@@ -76,24 +76,24 @@ that API.
 
 `models/`, `engineering/`, `data/` and `verification/` import nothing from `mcp/`, `cli/` or
 `plugins/` (the plain-text summary shared by the CLI and the executable demonstration lives in
-`common/format.py`). The MCP server and the plugin skills are documentation and transport only;
+`aipe_magnetics_database.common.format`). The MCP server and the plugin skills are documentation and transport only;
 `tests/mcp/test_server.py` asserts that the server builds without any API key or network access and
 that its tool set equals `api.CAPABILITIES` plus `list_capabilities`, one tool per API function.
 
 ## Repository layout
 
 ```
-AIPE-Magnetics-Database/
-├── src/aipe_magnetics_design/        package (data, models, engineering, verification, integrations, api, mcp, cli)
-├── schemas/                   v0.1 schema (unchanged) and v0.2 mirror of the packaged schemas
+AIPE-Magnetics-Design/
+├── src/aipe_magnetics_design/ package (models, engineering, design, verification, integrations, api, mcp, cli)
+├── src/aipe_magnetics/        deprecated v0.2 import name (shim, removed in 0.5)
+├── schemas/state/             mirror of the packaged magnetic engineering state schema
 ├── skills/                    canonical SKILL.md sources shared by both plugins
 ├── plugins/claude/            Claude Code plugin + marketplace
 ├── plugins/codex/             Codex plugin + marketplace
-├── examples/                  v0.1 example, synthetic import example, DAB 10 kW demonstration
-├── tests/                     pytest suites (data, models, engineering, api, mcp, plugins, integrations)
+├── examples/                  Database -> Design example, synthetic waveform inputs, DAB 10 kW demonstration
+├── tests/                     pytest suites (models, engineering, design, api, cli, mcp, plugins, integrations, release)
 ├── benchmarks/                reproducible fitting / timing scripts
 ├── docs/                      detailed documentation
-├── scripts/, importers/       v0.1 tooling, kept working
 ├── pyproject.toml, aipe.yaml, README.md, CHANGELOG.md
 ```
 
@@ -101,7 +101,7 @@ AIPE-Magnetics-Database/
 
 | Area | What you get |
 | --- | --- |
-| Data | Magnetic Data Schema v0.2 (materials, manufacturers, datasheet parameters, cores, windings, measurements, B-H loops, loss tables, waveforms, model metadata), SI with original units, checksums, provenance, licence; v0.1 migration; HDF5 waveform store; bundled catalogue (TDK N87 datasheet, 10 ferrites with MagNet-derived Steinmetz sets, 5 TDK cores); source adapters for Princeton MagNet, MagNet Challenge 2, Paderborn materialdatabase and mag-net-hub |
+| Data (from AIPE-Magnetics-Database) | Magnetic Data Schema v0.2 (materials, manufacturers, datasheet parameters, cores, windings, measurements, B-H loops, loss tables, waveforms, model metadata), SI with original units, checksums, provenance, licence; v0.1 migration; HDF5 waveform store; bundled catalogue (TDK N87 datasheet, 10 ferrites with MagNet-derived Steinmetz sets, 5 TDK cores); source adapters for Princeton MagNet, MagNet Challenge 2, Paderborn materialdatabase and mag-net-hub |
 | Models | Steinmetz, iGSE, Bertotti, Jiles-Atherton (ODE framework), data-driven adapter (ANN / LSTM / Transformer / Neural ODE; numpy + optional torch / magnethub backends) behind one Magnetic Model Contract with declared validity domains |
 | Engineering | material lookup and comparison, flux density, core-loss estimation, inductor and transformer sizing (every catalogue core offered in the material evaluated and ranked), saturation screening, Dowell winding loss, operating-point validation, Markdown/JSON reports; **waveform-informed transformer design** from the converter's actual waveforms (HDF5 / CSV / JSON import or SPS synthesis: exact RMS and harmonics, flux from the voltage integral, iGSE on the real flux, per-layer harmonic Dowell copper loss, leakage and external inductance, thermal estimate, ranked integer-turn candidates, material comparison) and structured **material measurement requests** |
 | Verification | evidence per capability and operating range (L1 software, L2 numerical/physical, L3 engineering), check suite with machine- and human-readable reports, verification status in every result derived from the bundled evidence file (`L0 unverified`, stated explicitly, until the release step records that file) |
@@ -110,5 +110,6 @@ AIPE-Magnetics-Database/
 Every result is an envelope with values + units, assumptions, model identity and version, input
 conditions, sources, verification status, warnings and limitations. Invalid or out-of-domain inputs
 are rejected explicitly, never clipped; uncertainty is reported as unknown when it is unknown.
-Version 0.2.0 was developed on `feature/aipe-magnetics-v0.2`; the v0.1 record scaffold is preserved
-unchanged (see [audit-v0.1.md](audit-v0.1.md) and the [CHANGELOG](../CHANGELOG.md)).
+Loss and hysteresis estimates reject out-of-domain points by default; design and validation calculations
+continue with a warning and mark the result `out_of_range`. [audit-v0.1.md](audit-v0.1.md) is the historical
+audit of the pre-split repository and describes files that now live in AIPE-Magnetics-Database.

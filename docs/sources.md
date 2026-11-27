@@ -6,8 +6,8 @@ format conversion, unit normalisation, integrity validation (SHA-256), original-
 version tracking (pinned commit), licence / redistribution checks, local caching and explicit error
 handling. Where the licence permits, the adapter downloads on demand from a pinned upstream commit;
 otherwise it only reads a checkout or files the user supplies. Usage, exact unit mappings, cache
-behaviour and the executable import examples (`examples/import_princeton_magnet_db.py`,
-`examples/import_magnet_hub_fixture.py`) are documented in [sources-adapters.md](sources-adapters.md).
+behaviour and the executable import examples are documented in the AIPE-Magnetics-Database repository,
+where the adapters live; this page is kept here as the attribution record for the sources the design code relies on.
 The Paderborn materialdatabase licence is recorded with the SPDX identifier `GPL-3.0-only`.
 
 | Source | Pinned commit | Licence | What it provides | AIPE adapter policy |
@@ -30,9 +30,9 @@ The Paderborn materialdatabase licence is recorded with the SPDX identifier `GPL
 * materialdatabase: some B-H files store B in mT despite the convention (N27/N30/T37) and headers
   carry no units; the adapter requires an explicit column→unit mapping per file.
 
-## Derived data bundled with this repository
+## Derived data (stored in AIPE-Magnetics-Database, not here)
 
-`src/aipe_magnetics_design/data/derived/princeton-magnet-steinmetz-fits.json` — classical Steinmetz
+`data/derived/princeton-magnet-steinmetz-fits.json` in the `aipe_magnetics_database` package — classical Steinmetz
 parameter sets fitted by `benchmarks/fit_steinmetz_from_magnet.py` (ordinary least squares in log
 space) on sinusoidal, zero-DC-bias rows of the MagNet scalar databases, per measured temperature
 (25/50/70/90 degC), restricted to 50–500 kHz and 10–300 mT. Each set records the source file SHA-256,

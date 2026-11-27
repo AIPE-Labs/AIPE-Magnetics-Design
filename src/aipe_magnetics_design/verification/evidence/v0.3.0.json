@@ -11,7 +11,7 @@
       "metrics": {
         "from_lamination_consistent": true,
         "k_c_W_per_m3_Hz2_T2": 0.4030088463778154,
-        "max_rel_error_direct_vs_formula": 7.898663974291552e-16,
+        "max_rel_error_direct_vs_formula": 1.8054089084094975e-15,
         "sigma_S_per_m": 2000000.0,
         "thickness_m": 0.00035
       },
@@ -188,9 +188,11 @@
       "method": "check_exported_schemas(package dir) and compare_directories(package dir, repository schemas/v0.2).",
       "metrics": {
         "differences": 0,
-        "mirror_compared": true
+        "mirror_compared": false
       },
-      "notes": [],
+      "notes": [
+        "no repository checkout detected: mirror comparison not applicable (packaged files compared to a fresh export only)"
+      ],
       "status": "pass",
       "tool_version": "0.3.0"
     },
@@ -207,13 +209,13 @@
         "documents": 21,
         "generator_versions": {
           "jsonschema": "4.26.0",
-          "pydantic": "2.14.2"
+          "pydantic": "2.13.5"
         },
         "kinds_bound": 19,
         "problems": 0
       },
       "notes": [
-        "21 schema documents checked; 31 shared definitions; generated with pydantic 2.14.2, jsonschema 4.26.0"
+        "21 schema documents checked; 31 shared definitions; generated with pydantic 2.13.5, jsonschema 4.26.0"
       ],
       "status": "pass",
       "tool_version": "0.3.0"
@@ -253,12 +255,12 @@
       "level": "L1",
       "method": "validate_legacy_records on the inputs; migrate_record; validate_record + validate_catalogue on the outputs; field-by-field equality of id, kind, name, synthetic, evidence, evidence_refs and (except measurement.tool) properties.",
       "metrics": {
-        "records_migrated": 12,
-        "repository_examples": 1,
+        "records_migrated": 11,
+        "repository_examples": 0,
         "v01_kinds": 11
       },
       "notes": [
-        "12 v0.1 records migrated and validated"
+        "11 v0.1 records migrated and validated"
       ],
       "status": "pass",
       "tool_version": "0.3.0"
@@ -272,7 +274,7 @@
       "level": "L2",
       "method": "Two stacked LSTM layers (H=4) with a tanh/identity dense head and random N(0, 0.5^2) weights (seed 7) are evaluated on random inputs (N=3, L=6) by both implementations; compare max |difference|.",
       "metrics": {
-        "max_abs_diff_last": 0.0,
+        "max_abs_diff_last": 2.7755575615628914e-17,
         "max_abs_diff_sequence": 1.1102230246251565e-16,
         "output_shape_last": [
           3,
@@ -349,7 +351,7 @@
         "dynamic_ode_module_available": true,
         "integrator": "scipy.integrate.solve_ivp",
         "max_abs_error_constant_input": 2.3103269297664042e-11,
-        "max_abs_error_sinusoidal_input": 3.0913271942267784e-11,
+        "max_abs_error_sinusoidal_input": 3.091354949802394e-11,
         "method": "DOP853",
         "nfev": 629,
         "vector_field_max_abs_error": 0.0
@@ -419,7 +421,7 @@
       "method": "Load reference/metadata.json, recompute the weights SHA-256, run predict() twice on the same inputs (bit-for-bit comparison) and compare a 5-sample batch evaluation against per-sample evaluations with np.allclose(rtol=1e-12, atol=0); bit equality between batched and single evaluations is not a property of the model because BLAS gemm and gemv kernels round differently.",
       "metrics": {
         "batch_consistent_rtol_1e-12": true,
-        "batch_vs_single_max_rel_diff": 2.1094237467877974e-15,
+        "batch_vs_single_max_rel_diff": 1.9984014443252818e-15,
         "declared_max_rel_error_training_grid": 0.0017764027419877593,
         "parameter_count": 105,
         "repeat_bit_identical": true,
@@ -461,7 +463,7 @@
       "metrics": {
         "max_relative_error": 0.0008186486140200344,
         "points": 400,
-        "rms_relative_error": 0.00016142449240606958,
+        "rms_relative_error": 0.00016142449240606863,
         "synthetic_parameters": {
           "alpha": 1.45,
           "beta": 2.6,
@@ -522,8 +524,8 @@
       "method": "LinearRL with a reported limit i_max = 5 A and a 10 V step (steady state 10 A): the violation message is present, max|i| is 10 (1 - e^-5) A to 1e-9 relative and the trajectory still equals the closed form.",
       "metrics": {
         "expected_peak_A": 9.932620530009146,
-        "max_rel_error_vs_closed_form": 7.368236968499483e-13,
-        "peak_current_A": 9.932620530008808,
+        "max_rel_error_vs_closed_form": 7.370025375530672e-13,
+        "peak_current_A": 9.932620530008805,
         "violations": [
           "|i| = 9.93262 A exceeds i_max = 5 A at t = 0.005 s"
         ]
@@ -542,12 +544,12 @@
       "method": "NonlinearInductor(L0 = 1 mH, I_sat = 2 A, R = 0.5 Ohm) driven by a 3 V, 1 kHz sinusoid for 3 ms (DOP853, rtol 1e-10, atol 1e-13, 6001-point grid); trapezoidal integration of the output powers; residual relative to the absorbed energy must be below 1e-4. The analytic W(lambda) is independently checked against cumulative trapezoidal quadrature of i(lambda) dlambda.",
       "metrics": {
         "I_sat_A": 2.0,
-        "energy_in_J": 0.000363134223649282,
+        "energy_in_J": 0.00036313422364928527,
         "energy_resistive_J": 0.000292776201199118,
         "n_steps": 37,
-        "peak_current_A": 0.8990683111117402,
-        "power_balance_residual_rel": 4.04965272798097e-07,
-        "stored_energy_change_J": 7.035816950691398e-05,
+        "peak_current_A": 0.8990683111117406,
+        "power_balance_residual_rel": 4.049652613778718e-07,
+        "stored_energy_change_J": 7.035816950691308e-05,
         "stored_energy_quadrature_rel_error": 8.947195612374468e-09
       },
       "notes": [
@@ -567,38 +569,38 @@
       "metrics": {
         "accelerated_extrapolations": 1,
         "accelerated_periods": 3,
-        "accelerated_residual_rel_ptp": 1.670914817702899e-09,
-        "biased_contraction_ratio": 0.818732405755047,
-        "biased_estimated_remaining": 9.74077108594509e-07,
+        "accelerated_residual_rel_ptp": 1.6707053388794706e-09,
+        "biased_contraction_ratio": 0.8187323570610674,
+        "biased_estimated_remaining": 9.740776089952068e-07,
         "biased_expected_periods": 91,
         "biased_periods": 91,
         "biased_ratio_exact": 0.8187307530779818,
-        "biased_residual_end_rel_ptp": 9.739332174956367e-07,
-        "biased_residual_start_rel_ptp": 1.1895941520303934e-06,
+        "biased_residual_end_rel_ptp": 9.739332873219111e-07,
+        "biased_residual_start_rel_ptp": 1.1895944034049814e-06,
         "biased_ripple_ptp_A": 0.06359915564479479,
-        "biased_start_bound": 1.1897272183718725e-06,
+        "biased_start_bound": 1.189728219911774e-06,
         "biased_transient_amplitude_A": 4.968201230271494,
-        "boundary_change": 7.055206829747059e-07,
-        "decay_ratio_max": 0.3678794446289268,
-        "decay_ratio_min": 0.367879427199065,
+        "boundary_change": 7.055206779596173e-07,
+        "decay_ratio_max": 0.367879442683448,
+        "decay_ratio_min": 0.3678794286895368,
         "expected_periods": 14,
         "history": [
-          0.2776663077398405,
-          0.10989652722049949,
-          0.04156282389166378,
-          0.015447208385732006,
-          0.0057042715033749514,
-          0.002101417357872543,
-          0.0007734659606400192,
-          0.00028459608843974443,
-          0.00010470434143403109,
-          3.851956152946895e-05,
-          1.4170688314757496e-05,
-          5.213122958144111e-06,
-          1.9178032249993836e-06,
-          7.055206829747059e-07
+          0.27766630773984025,
+          0.10989652722049896,
+          0.041562823891655505,
+          0.01544720838572516,
+          0.005704271503387468,
+          0.0021014173578908744,
+          0.0007734659606259678,
+          0.00028459608843960424,
+          0.0001047043414276778,
+          3.851956151082185e-05,
+          1.4170688322668592e-05,
+          5.213122998900483e-06,
+          1.9178032035968664e-06,
+          7.055206779596173e-07
         ],
-        "max_rel_error_vs_particular": 2.2322336062419386e-06,
+        "max_rel_error_vs_particular": 2.232233601156193e-06,
         "periods": 14,
         "raises_when_not_converged": true,
         "tolerance": 1e-06
@@ -616,8 +618,8 @@
       "level": "L2",
       "method": "Integrate di/dt = (v - R i)/L (R = 1 Ohm, L = 1 mH) with DOP853, rtol 1e-12, atol 1e-14 on a 501-point grid over 5 tau for a 10 V step and a 10 V, 1 kHz sinusoid with 2 V offset and 0.5 A initial current; compare with i(t) = V/R + (i0 - V/R) exp(-t/tau) and the phasor particular + transient solution.",
       "metrics": {
-        "max_rel_error_sinusoid": 1.3029368938660742e-12,
-        "max_rel_error_step": 7.450503691934186e-13,
+        "max_rel_error_sinusoid": 1.3022528069092452e-12,
+        "max_rel_error_step": 7.448715284902997e-13,
         "n_steps_sinusoid": 117,
         "n_steps_step": 24,
         "tolerance": 1e-06
@@ -673,10 +675,10 @@
       "metrics": {
         "errors_monotone_decreasing": true,
         "errors_vs_analytic": [
-          4.858834661698336e-06,
-          1.2238307265336425e-07,
+          4.858834661720691e-06,
+          1.223830726421867e-07,
           3.253938656136643e-09,
-          9.53821740610881e-11,
+          9.538216847231613e-11,
           1.0484536220346655e-12
         ],
         "finest_error": 1.0484536220346655e-12,
@@ -694,17 +696,17 @@
           101,
           201
         ],
-        "observed_order": 5.21969239216081,
+        "observed_order": 5.219692379522961,
         "orders_successive": [
-          5.324346964248897,
-          5.21969239216081,
-          5.093278239493211
+          5.324346964507884,
+          5.219692379522961,
+          5.093278420807445
         ],
         "orders_vs_analytic": [
-          5.311134409326972,
-          5.23307316273311,
-          5.092323576398434,
-          6.507384715817736
+          5.311134409465375,
+          5.233073162601345,
+          5.092323660930936,
+          6.507384631285234
         ]
       },
       "notes": [
@@ -738,7 +740,7 @@
       "method": "Evaluate F_R = Delta[(e^{2D}-e^{-2D}+2 sin 2D)/(e^{2D}+e^{-2D}-2 cos 2D) + (2/3)(m^2-1)(e^{D}-e^{-D}-2 sin D)/(e^{D}+e^{-D}+2 cos D)] independently; compare for m in 1..8, Delta in 0.05..6; check asymptotes.",
       "metrics": {
         "max_rel_error_vs_exponential_form": 4.4408896313402385e-16,
-        "thick_limit_rel_error": 3.432763557799662e-06,
+        "thick_limit_rel_error": 3.432763558230294e-06,
         "thin_limit": 1.0000000175554657
       },
       "notes": [],
@@ -1001,7 +1003,7 @@
         ],
         "exact_tolerance": 1e-12,
         "max_rel_deviation_from_approximation": 0.0008656052186563801,
-        "max_rel_error_vs_gamma_closed_form": 1.063349015481746e-15
+        "max_rel_error_vs_gamma_closed_form": 1.8228840265401344e-15
       },
       "notes": [],
       "reference": {
@@ -1077,9 +1079,9 @@
       "metrics": {
         "monotone_decrease": true,
         "observed_convergence_orders": [
-          2.0127148987460837,
-          2.0021978486243515,
-          2.0000492089427153
+          2.0127148987477104,
+          2.0021978486820258,
+          2.000049210311975
         ],
         "points": [
           [
@@ -1095,12 +1097,12 @@
             0.3
           ]
         ],
-        "rel_error_n1024": 3.526693402382079e-06,
-        "rel_error_n256": 5.659928236942505e-05,
-        "rel_error_n4096": 2.2040330164600161e-07,
-        "rel_error_n64": 0.0009216924695734632,
+        "rel_error_n1024": 3.526693402091041e-06,
+        "rel_error_n256": 5.659928236927953e-05,
+        "rel_error_n4096": 2.2040330120944414e-07,
+        "rel_error_n64": 0.0009216924695731721,
         "sampling_sensitivity_warning_at_n64": true,
-        "scale_invariance_max_abs_spread_of_rel_error": 4.167577065734325e-16,
+        "scale_invariance_max_abs_spread_of_rel_error": 3.832074462167389e-16,
         "scale_invariance_tolerance": 1e-13,
         "tolerance_n4096": 0.0001
       },
@@ -1150,7 +1152,7 @@
           2.5,
           3.0
         ],
-        "max_rel_error": 7.539457464619585e-16,
+        "max_rel_error": 6.520659450248267e-16,
         "n_points": 336,
         "tolerance": 1e-09
       },
@@ -1195,8 +1197,8 @@
       "metrics": {
         "closed_forms_rel_difference_at_half_duty": 0.0,
         "degenerate_trapezoid_rel_error": 0.0,
-        "max_rel_error_trapezoidal": 9.88948650630212e-16,
-        "max_rel_error_triangular": 4.3282993225389777e-16,
+        "max_rel_error_trapezoidal": 9.320170357649273e-16,
+        "max_rel_error_triangular": 4.3282993225389767e-16,
         "n_trapezoidal_points": 567,
         "n_triangular_points": 945,
         "tolerance": 1e-12,
@@ -1255,7 +1257,7 @@
         "vendored_files": 15
       },
       "notes": [
-        "Core commit 4e664f03df1e294fefc169244bf1223c7352e2be; example id aipe.example.dab-10kw."
+        "Core commit a8481c60ddfdced685067227fb16ca534be3eb5b; example id aipe.example.dab-10kw."
       ],
       "range": {
         "note": "Schema/software interoperability check; no physical operating range applies."
@@ -1266,8 +1268,8 @@
         "license": "MIT",
         "note": "Schemas and example vendored byte-exact; scripts/validate.py::validate_state reproduced under MIT attribution (src/aipe_magnetics_design/integrations/aipe_core/schemas/v0.1.0/NOTICE.md).",
         "reference": "AIPE-Core: versioned SI Engineering State schemas, evidence conventions and offline contract validator (schemas/, scripts/validate.py, examples/dab-10kw)",
-        "url": "https://github.com/FulongLi/AIPE-Core",
-        "version": "4e664f03df1e294fefc169244bf1223c7352e2be"
+        "url": "https://github.com/AIPE-Labs/AIPE-Core",
+        "version": "a8481c60ddfdced685067227fb16ca534be3eb5b"
       },
       "status": "pass",
       "tool_version": "0.3.0"
@@ -1304,8 +1306,8 @@
         "license": "MIT",
         "note": "Schemas and example vendored byte-exact; scripts/validate.py::validate_state reproduced under MIT attribution (src/aipe_magnetics_design/integrations/aipe_core/schemas/v0.1.0/NOTICE.md).",
         "reference": "AIPE-Core: versioned SI Engineering State schemas, evidence conventions and offline contract validator (schemas/, scripts/validate.py, examples/dab-10kw)",
-        "url": "https://github.com/FulongLi/AIPE-Core",
-        "version": "4e664f03df1e294fefc169244bf1223c7352e2be"
+        "url": "https://github.com/AIPE-Labs/AIPE-Core",
+        "version": "a8481c60ddfdced685067227fb16ca534be3eb5b"
       },
       "status": "pass",
       "tool_version": "0.3.0"
@@ -1328,11 +1330,10 @@
         "verification_claim_errors": 0,
         "verification_claims": 9,
         "verification_claims_unchecked": false,
-        "warnings": 1
+        "warnings": 0
       },
       "notes": [
-        "Registry commit f419260bc604e5e79ecde9d998139a39a5e0ebdf; manifest /Users/fulongli/Documents/GitHub/AIPE-Magnetics-Design/aipe.yaml validated for repository root /Users/fulongli/Documents/GitHub/AIPE-Magnetics-Design; 9 verification-level claim(s) in extensions.aipe.magnetics.model_maturity.",
-        "warning [unresolved_license] rights remain unconfirmed; no open-source licence inferred"
+        "Registry commit 96426e9d4f2e097a53b65fd783cb660be65b8a46; manifest aipe.yaml validated against its repository root; 9 verification-level claim(s) in extensions.aipe.magnetics.model_maturity."
       ],
       "range": {
         "note": "Schema/software interoperability check; no physical operating range applies."
@@ -1343,8 +1344,8 @@
         "license": "MIT",
         "note": "Schema vendored byte-exact; loader and semantic rules re-implemented under MIT attribution (src/aipe_magnetics_design/integrations/aipe_registry/schema/NOTICE.md).",
         "reference": "AIPE-Registry: capability manifest schema v0.1 and manifest validation rules (schema/capability-manifest.schema.json, scripts/registry.py)",
-        "url": "https://github.com/FulongLi/AIPE-Registry",
-        "version": "f419260bc604e5e79ecde9d998139a39a5e0ebdf"
+        "url": "https://github.com/AIPE-Labs/AIPE-Registry",
+        "version": "96426e9d4f2e097a53b65fd783cb660be65b8a46"
       },
       "status": "pass",
       "tool_version": "0.3.0"
@@ -1364,11 +1365,10 @@
         "mutation_rejected": true,
         "repository_manifest": true,
         "vendored_files": 1,
-        "warnings": 2
+        "warnings": 1
       },
       "notes": [
-        "Registry commit f419260bc604e5e79ecde9d998139a39a5e0ebdf; manifest /Users/fulongli/Documents/GitHub/AIPE-Magnetics-Design/aipe.yaml id 'aipe.magnetics-design' with 14 capabilities and 9 verification-level claim(s) (claims are judged by integration.registry-manifest-accepted).",
-        "warning [unresolved_license] rights remain unconfirmed; no open-source licence inferred",
+        "Registry commit 96426e9d4f2e097a53b65fd783cb660be65b8a46; manifest aipe.yaml id 'aipe.magnetics-design' with 14 capabilities and 9 verification-level claim(s) (claims are judged by integration.registry-manifest-accepted).",
         "warning [verification_claims_unchecked] extensions/aipe.magnetics/model_maturity claims verification levels for 9 model(s); no evidence registry supplied for cross-checking"
       ],
       "range": {
@@ -1380,8 +1380,8 @@
         "license": "MIT",
         "note": "Schema vendored byte-exact; loader and semantic rules re-implemented under MIT attribution (src/aipe_magnetics_design/integrations/aipe_registry/schema/NOTICE.md).",
         "reference": "AIPE-Registry: capability manifest schema v0.1 and manifest validation rules (schema/capability-manifest.schema.json, scripts/registry.py)",
-        "url": "https://github.com/FulongLi/AIPE-Registry",
-        "version": "f419260bc604e5e79ecde9d998139a39a5e0ebdf"
+        "url": "https://github.com/AIPE-Labs/AIPE-Registry",
+        "version": "96426e9d4f2e097a53b65fd783cb660be65b8a46"
       },
       "status": "pass",
       "tool_version": "0.3.0"
@@ -1397,13 +1397,13 @@
       "metrics": {
         "accelerated_extrapolations": 2,
         "accelerated_periods": 6,
-        "accelerated_vs_plain_loop_energy_rel": 3.4460286984101426e-05,
-        "accelerated_vs_plain_max_dM_rel_ptp": 2.493034008758473e-05,
+        "accelerated_vs_plain_loop_energy_rel": 3.4460286980477114e-05,
+        "accelerated_vs_plain_max_dM_rel_ptp": 2.4930340083880938e-05,
         "admissible_gap_A_per_m": 200000.0,
         "cases": {
           "sin_2000_offset_+1000": {
             "flux_density_peak_T": 1.5337838630261287,
-            "loop_energy_density": 1547.5937162841556,
+            "loop_energy_density": 1547.5937111330193,
             "ok": true,
             "periods": 2,
             "premagnetisation_M_A_per_m": 776558.1452295616,
@@ -1413,8 +1413,8 @@
             ]
           },
           "sin_2000_offset_-1000": {
-            "flux_density_peak_T": 1.5337835070252483,
-            "loop_energy_density": 1547.593153899411,
+            "flux_density_peak_T": 1.5337835070259234,
+            "loop_energy_density": 1547.5931539237245,
             "ok": true,
             "periods": 2,
             "premagnetisation_M_A_per_m": -776558.1452295616,
@@ -1425,7 +1425,7 @@
           },
           "sin_5000_phase_pi_2": {
             "flux_density_peak_T": 1.6917077191626617,
-            "loop_energy_density": 2145.5514733289974,
+            "loop_energy_density": 2145.5514733341706,
             "ok": true,
             "periods": 1,
             "premagnetisation_M_A_per_m": 1341218.228124419,
@@ -1433,8 +1433,8 @@
             "warnings": []
           },
           "tri_200_offset_-1000": {
-            "flux_density_peak_T": 1.1831109781588596,
-            "loop_energy_density": 3.920849193702132,
+            "flux_density_peak_T": 1.1831109781588598,
+            "loop_energy_density": 3.9208491937021464,
             "ok": true,
             "periods": 6,
             "premagnetisation_M_A_per_m": -869422.6488784521,
@@ -1445,8 +1445,8 @@
             ]
           }
         },
-        "mirror_loop_energy_rel": 3.6339301375311843e-07,
-        "mirror_max_rel_B_error": 4.02674616773231e-07,
+        "mirror_loop_energy_rel": 3.600488234108022e-07,
+        "mirror_max_rel_B_error": 4.0036521175748036e-07,
         "plain_contraction_ratio": 0.06668032371093788,
         "plain_periods": 13
       },
@@ -1472,12 +1472,12 @@
       "level": "L2",
       "method": "Simulate the 10 kA/m, 50 Hz steady-state loop, split it by the sign of dH/dt, sort each branch by H and interpolate B at 41 common values with |H| <= 0.8 H_peak; require B_desc - B_asc > 0 everywhere and equal to 2 B_r at H = 0 within 1e-3. The task brief phrased this as 'descending below ascending'; with B and H positive along the same reference direction the physically correct ordering, verified here, is descending >= ascending.",
       "metrics": {
-        "gap_at_H0_T": 1.2604817576979703,
-        "max_gap_T": 1.2604817576979703,
-        "min_gap_T": 0.013791395930855765,
+        "gap_at_H0_T": 1.260481757697967,
+        "max_gap_T": 1.260481757697967,
+        "min_gap_T": 0.013791395931127992,
         "n_grid": 41,
         "rel_error_gap_vs_2Br": 0.0,
-        "two_Br_T": 1.2604817576979703
+        "two_Br_T": 1.260481757697967
       },
       "notes": [],
       "range": {
@@ -1498,24 +1498,24 @@
       "level": "L2",
       "method": "trajectory() with Excitation.sinusoidal(1e4 A/m, 50 Hz) and Excitation.triangular(1e4 A/m, 50 Hz), steady-state tolerance 1e-4; require convergence, closure error of B below 1e-6, loop energy > 0, no |M| > Ms constraint violation, coercivity > 0, remanence > 0, the two H = 0 / B = 0 crossings symmetric to 1e-4 relative, and triangular vs sinusoidal agreement of the loop energy (1e-4), remanence (1e-4), coercivity (1e-3) and peak flux density (1e-5); the maximum B difference between the two loops at common H values is reported (interpolation-limited, bound 1 % of B peak).",
       "metrics": {
-        "closure_error_B": 1.8220848118962716e-11,
-        "coercivity_A_per_m": 316.0158956423835,
-        "coercivity_symmetry": 4.745166836712827e-10,
-        "flux_density_peak_T": 1.838747190157032,
-        "loop_energy_density_J_per_m3": 2333.8129431777925,
-        "magnetisation_peak_over_Ms": 0.9082678257828615,
+        "closure_error_B": 1.8220787739643195e-11,
+        "coercivity_A_per_m": 316.01589564238344,
+        "coercivity_symmetry": 4.745139855434522e-10,
+        "flux_density_peak_T": 1.8387471901571226,
+        "loop_energy_density_J_per_m3": 2333.812943184726,
+        "magnetisation_peak_over_Ms": 0.9082678257829065,
         "n_steps": 506,
         "periods": 2,
-        "remanence_T": 0.6302408788489852,
-        "remanence_symmetry": 2.0222998460483505e-12,
-        "triangular_closure_error_B": 1.7870781860131082e-08,
+        "remanence_T": 0.6302408788489835,
+        "remanence_symmetry": 2.0173674073994574e-12,
+        "triangular_closure_error_B": 1.7870792366130317e-08,
         "triangular_periods": 1,
-        "triangular_vs_sinusoidal_max_dB_T": 0.0018835433243018784,
+        "triangular_vs_sinusoidal_max_dB_T": 0.0018835433243039046,
         "triangular_vs_sinusoidal_rel": {
-          "coercivity": 0.00013615909965545995,
-          "flux_density_peak": 2.1011405806937668e-07,
-          "loop_energy": 5.060045134968673e-06,
-          "remanence": 1.8098031632789689e-09
+          "coercivity": 0.00013615909965366123,
+          "flux_density_peak": 2.1011400879986303e-07,
+          "loop_energy": 5.060042175381566e-06,
+          "remanence": 1.809806157973857e-09
         }
       },
       "notes": [
@@ -1545,9 +1545,9 @@
         "anhysteretic_initial_susceptibility": 2162.1621621621634,
         "chi_0_analytic": 114.77761836441896,
         "rel_error_rhs": 1.2381207170619743e-16,
-        "rel_error_secant": 0.0005918986706015633,
+        "rel_error_secant": 0.0005918986706018109,
         "rhs_slope": 114.77761836441894,
-        "secant_slope": 114.84555508414367,
+        "secant_slope": 114.8455550841437,
         "tolerance_secant": 0.02
       },
       "notes": [],
@@ -1570,43 +1570,43 @@
       "method": "Illustrative set, 50 Hz sinusoids of 10, 50 and 100 A/m with trajectory() defaults (accelerate=True, steady_state_tol 1e-4): require convergence in at most 12 integrated periods each, oint H dB > 0 increasing with amplitude, |mean M| of the last period below 10 x tol of the peak-to-peak M (symmetry), and at 100 A/m agreement of the loop energy between the accelerated and the plain period iteration (accelerate=False, up to 150 periods; both RK45 rtol 1e-7, max_step = period/100) to 1e-4 while the plain iteration needs more than 20 periods (contraction ratio reported). The exponent of the energy-vs-amplitude power law between 50 and 100 A/m is reported as a metric only.",
       "metrics": {
         "accelerated_periods_100_A_per_m_same_config": 8,
-        "accelerated_vs_plain_loop_energy_rel_100_A_per_m": 5.555203713247854e-06,
+        "accelerated_vs_plain_loop_energy_rel_100_A_per_m": 5.555187563422306e-06,
         "energies_monotone": true,
-        "energy_exponent_50_to_100": 3.1428240639406413,
-        "plain_contraction_ratio_100_A_per_m": 0.7575826648745534,
+        "energy_exponent_50_to_100": 3.1428240639406844,
+        "plain_contraction_ratio_100_A_per_m": 0.7575826652724941,
         "plain_periods_100_A_per_m": 38,
         "runs": {
           "100_A_per_m": {
-            "boundary_change": 8.914919451731744e-06,
-            "coercivity_A_per_m": 29.20568755179184,
+            "boundary_change": 8.91491942854882e-06,
+            "coercivity_A_per_m": 29.20568755179159,
             "extrapolations": 1,
-            "loop_energy_density": 1.3749972326380833,
-            "mean_M_over_ptp": 6.579671897360406e-05,
+            "loop_energy_density": 1.3749972326381277,
+            "mean_M_over_ptp": 6.579671878488856e-05,
             "ok": true,
             "periods": 4,
-            "remanence_T": 0.00511150858607661,
+            "remanence_T": 0.0051115085860765595,
             "warnings": []
           },
           "10_A_per_m": {
-            "boundary_change": 6.911399194980941e-10,
-            "coercivity_A_per_m": 0.2976694323069212,
+            "boundary_change": 6.911097951167382e-10,
+            "coercivity_A_per_m": 0.2976694323070619,
             "extrapolations": 3,
-            "loop_energy_density": 0.001158086542562998,
-            "mean_M_over_ptp": 5.0503215782896775e-08,
+            "loop_energy_density": 0.0011580865425629815,
+            "mean_M_over_ptp": 5.050103268169075e-08,
             "ok": true,
             "periods": 7,
-            "remanence_T": 4.339295124886853e-05,
+            "remanence_T": 4.3392951248889046e-05,
             "warnings": []
           },
           "50_A_per_m": {
-            "boundary_change": 1.5948858841571342e-08,
-            "coercivity_A_per_m": 7.607305668435374,
+            "boundary_change": 1.5948821900480718e-08,
+            "coercivity_A_per_m": 7.607305668436369,
             "extrapolations": 2,
-            "loop_energy_density": 0.15567451083829742,
-            "mean_M_over_ptp": 7.665424715807969e-06,
+            "loop_energy_density": 0.15567451083829784,
+            "mean_M_over_ptp": 7.665425238633787e-06,
             "ok": true,
             "periods": 5,
-            "remanence_T": 0.0011626655447716694,
+            "remanence_T": 0.0011626655447718288,
             "warnings": []
           }
         },
@@ -1633,24 +1633,24 @@
       "level": "L2",
       "method": "trajectory() with a 5 kA/m, 50 Hz sinusoid, max_step = period/200, RK45 at rtol 1e-6 and 1e-9 and DOP853 at rtol 1e-9; compare loop energy densities and coercivities.",
       "metrics": {
-        "coercivity_rel_change_rtol": 7.938324932273638e-09,
-        "loop_energy_rel_change_method": 4.994196036394117e-08,
-        "loop_energy_rel_change_rtol": 1.569686081354894e-07,
+        "coercivity_rel_change_rtol": 7.940268430367104e-09,
+        "loop_energy_rel_change_method": 4.986555045957515e-08,
+        "loop_energy_rel_change_rtol": 1.5623387373643925e-07,
         "runs": {
           "dop853_1e-9": {
-            "hc": 315.9953201715804,
-            "n_steps": 244,
-            "w": 2145.5508520407056
+            "hc": 315.9953201636039,
+            "n_steps": 245,
+            "w": 2145.5508506281876
           },
           "rk45_1e-6": {
-            "hc": 315.9953226612845,
+            "hc": 315.99532266128296,
             "n_steps": 248,
-            "w": 2145.550622409579
+            "w": 2145.5506224095298
           },
           "rk45_1e-9": {
-            "hc": 315.99532015281096,
-            "n_steps": 620,
-            "w": 2145.5509591937266
+            "hc": 315.9953201521953,
+            "n_steps": 622,
+            "w": 2145.550957617267
           }
         },
         "tolerance": 0.005
@@ -1808,7 +1808,7 @@
       "method": "For the synthetic parameters and swept (alpha, beta), evaluate SteinmetzModel at (f, B), (2f, B) and (f, 2B) on a grid and compare the ratios with 2^alpha and 2^beta (relative tolerance 1e-12); also check the vectorised helper loss_density_array against the scalar path.",
       "metrics": {
         "max_rel_error_scaling": 2.5506227241335e-16,
-        "max_rel_error_vectorised": 0.0,
+        "max_rel_error_vectorised": 2.9451005721170256e-16,
         "n_points": 189,
         "tolerance": 1e-12
       },
@@ -1857,7 +1857,7 @@
       "method": "Compare dc_component/peak of sampled and PWL versions of analytic waveforms with their constructor values, check that segments sum to one period and to zero net flux change, that samples close, and that the same waveform given as [0, T) samples with endpoint_included=False reproduces the inclusive representation.",
       "metrics": {
         "dc_tolerance_T": 1e-12,
-        "max_sampled_dc_deviation_T": 6.938893903907228e-18,
+        "max_sampled_dc_deviation_T": 3.469446951953614e-18,
         "n_samples": 4001,
         "peak_rel_tolerance": 1e-12
       },

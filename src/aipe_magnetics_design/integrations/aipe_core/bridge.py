@@ -60,7 +60,7 @@ def component_summary_from_design(result: EngineeringResult, *, role: str, creat
                                  description=(f"Analytical design by {result.capability} (model {result.model.id}@{result.model.version} "
                                               if result.model else f"Analytical design by {result.capability} (")
                                  + f"selected core {selected}): {values_text}",
-                                 source={"type": "repository", "reference": "https://github.com/FulongLi/AIPE-Magnetics-Database",
+                                 source={"type": "repository", "reference": "https://github.com/AIPE-Labs/AIPE-Magnetics-Database",
                                          "locator": result.capability},
                                  provenance={"created_at": created_at, "activity": f"{result.capability} executed by aipe-magnetics {__version__}",
                                              "inputs": assumption_ids + source_ids, "tool": tool}))

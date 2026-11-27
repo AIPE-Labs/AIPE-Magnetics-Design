@@ -1,2 +1,2 @@
-aipe-magnetics-database @ git+https://github.com/FulongLi/AIPE-Magnetics-Database.git@main
+aipe-magnetics-database @ git+https://github.com/AIPE-Labs/AIPE-Magnetics-Database.git@v0.3.0
 -e .

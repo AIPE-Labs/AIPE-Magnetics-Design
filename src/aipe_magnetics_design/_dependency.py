@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 MINIMUM_DATABASE_VERSION = (0, 3, 0)
-INSTALL_HINT = ('pip install "aipe-magnetics-database @ git+https://github.com/FulongLi/AIPE-Magnetics-Database.git" '
+INSTALL_HINT = ('pip install "aipe-magnetics-database @ git+https://github.com/AIPE-Labs/AIPE-Magnetics-Database.git@v0.3.0" '
                 "(AIPE-Magnetics-Design reads all magnetic data from the AIPE-Magnetics-Database package)")
 
 

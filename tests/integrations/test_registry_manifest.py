@@ -69,7 +69,7 @@ def minimal() -> dict:
     return {
         "schema_version": "0.1.0", "id": "aipe.example-tool", "name": "Example", "type": "tool",
         "domains": ["power-electronics"], "description": "Example manifest for tests.", "status": "experimental",
-        "maturity": "prototype", "repository": "https://github.com/FulongLi/AIPE-Example", "license": "MIT",
+        "maturity": "prototype", "repository": "https://github.com/AIPE-Labs/AIPE-Example", "license": "MIT",
         "capabilities": ["example-capability"], "inputs": [{"name": "in", "description": "Input."}],
         "outputs": [{"name": "out", "description": "Output."}],
         "dependencies": [{"id": "aipe.core", "version": "0.1.x", "optional": True}],
@@ -530,15 +530,16 @@ def test_registry_reference_validator_accepts_repository_manifest():
     checkouts = Path(value)
     script = checkouts / "AIPE-Registry" / "scripts" / "validate.py"
     core_manifest = checkouts / "AIPE-Core" / "aipe.yaml"
-    for path in (script, core_manifest):
+    database_manifest = checkouts / "AIPE-Magnetics-Database" / "aipe.yaml"
+    for path in (script, core_manifest, database_manifest):
         if not path.is_file():
             pytest.fail(f"ecosystem checkout incomplete: {path} not found")
-    # explicit files: the manifest set must include the aipe.core dependency
-    result = subprocess.run([sys.executable, str(script), str(core_manifest), str(MANIFEST_PATH)],
+    # explicit files: the manifest set must include both declared dependencies (aipe.core, aipe.magnetics-database)
+    result = subprocess.run([sys.executable, str(script), str(core_manifest), str(database_manifest), str(MANIFEST_PATH)],
                             capture_output=True, text=True)
     assert result.stdout.strip(), result.stderr
     payload = json.loads(result.stdout)
-    assert payload["manifest_count"] == 2
+    assert payload["manifest_count"] == 3
     ours = [item for item in payload["diagnostics"] if item["id"] == "aipe.magnetics-design"]
     drift = [item["message"] for item in ours if item["code"] == "documentation_drift"]
     errors = [item for item in ours if item["severity"] == "error" and item["code"] != "documentation_drift"]

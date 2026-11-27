@@ -26,8 +26,8 @@ Skills: `magnetic-material-analysis`, `inductor-design`, `transformer-design`,
 ## 1. Install the engine (both hosts)
 
 ```sh
-python -m pip install "aipe-magnetics-database @ git+https://github.com/FulongLi/AIPE-Magnetics-Database.git"
-python -m pip install "aipe-magnetics-design[mcp] @ git+https://github.com/FulongLi/AIPE-Magnetics-Design.git"
+python -m pip install "aipe-magnetics-database @ git+https://github.com/AIPE-Labs/AIPE-Magnetics-Database.git@v0.3.0"
+python -m pip install "aipe-magnetics-design[mcp] @ git+https://github.com/AIPE-Labs/AIPE-Magnetics-Design.git@v0.3.0"
 # or from a checkout:
 python -m pip install -e ".[mcp]"
 python -m aipe_magnetics_design.mcp.server --self-test   # prints the tool list and exits 0
@@ -41,7 +41,7 @@ absolute interpreter path (e.g. `C:\\venvs\\aipe\\Scripts\\python.exe` or `/opt/
 ## 2. Claude Code
 
 ```text
-/plugin marketplace add FulongLi/AIPE-Magnetics-Database        # GitHub default branch: works once v0.2 is merged ...
+/plugin marketplace add AIPE-Labs/AIPE-Magnetics-Database        # GitHub default branch: works once v0.2 is merged ...
 /plugin marketplace add /path/to/AIPE-Magnetics-Database         # ... until then use a local checkout of the feature branch
 /plugin install aipe-magnetics@aipe-magnetics                    # opens the details panel; choose a scope
 ```
@@ -71,7 +71,7 @@ Plugins are supported in Codex CLI (`/plugins` browser) and Codex in the ChatGPT
 IDE extension does not load plugins but does load standalone skills (see below).
 
 ```sh
-codex plugin marketplace add https://github.com/FulongLi/AIPE-Magnetics-Database   # or a local path
+codex plugin marketplace add https://github.com/AIPE-Labs/AIPE-Magnetics-Database   # or a local path
 codex plugin add aipe-magnetics@aipe-magnetics
 codex mcp list                      # shows aipe-magnetics (launched from the plugin)
 ```

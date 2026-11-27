@@ -16,7 +16,6 @@
 * The bundled evidence file `src/aipe_magnetics_design/verification/evidence/v0.2.0.json` is written by the
   maintainer's release step (`verify --update-bundled`); until then every model-based result reports
   `L0 unverified` with a statement naming the missing file, and `verify --check-bundled` exits 1.
-* The repository licence is `NOASSERTION` pending the owner's decision ([LICENSING.md](../LICENSING.md)).
 
 Known limitations of the unreleased waveform-informed capability are listed in the
 [CHANGELOG](../CHANGELOG.md) ("Unreleased").

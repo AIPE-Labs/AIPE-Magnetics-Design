@@ -41,7 +41,7 @@ def test_plugin_manifest_fields(plugin: Path, manifest: str):
     assert data["version"] == __import__("aipe_magnetics_design").__version__
     assert data["description"] and data["author"]["name"]
     assert data["homepage"].startswith("https://") and data["repository"].startswith("https://")
-    assert data["license"] == "NOASSERTION"
+    assert data["license"] == "MIT"
     for key in ("skills", "mcpServers"):
         assert data[key].startswith("./"), f"{key} path must be plugin-root relative and start with ./"
         assert (plugin / data[key]).exists()

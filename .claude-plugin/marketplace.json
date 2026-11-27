@@ -2,7 +2,7 @@
   "name": "aipe-magnetics-design",
   "owner": {
     "name": "AIPE (AI for Power Engineering)",
-    "url": "https://github.com/FulongLi"
+    "url": "https://github.com/AIPE-Labs"
   },
   "metadata": {
     "description": "AIPE Magnetics: standalone magnetic engineering expert (materials, core loss, inductor and transformer design, verification) for Claude Code and Codex.",

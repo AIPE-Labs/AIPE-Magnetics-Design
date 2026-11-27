@@ -42,12 +42,12 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, ValidationError, 
 from aipe_magnetics_database.common.errors import DataIntegrityError, DataNotFoundError, InvalidInputError, UnsupportedOperationError
 from aipe_magnetics_database.common.jsonio import load as load_json
 
-REGISTRY_REPOSITORY = "https://github.com/FulongLi/AIPE-Registry"
-REGISTRY_COMMIT = "f419260bc604e5e79ecde9d998139a39a5e0ebdf"
+REGISTRY_REPOSITORY = "https://github.com/AIPE-Labs/AIPE-Registry"
+REGISTRY_COMMIT = "96426e9d4f2e097a53b65fd783cb660be65b8a46"
 MANIFEST_SCHEMA_VERSION = "0.1.0"
 SCHEMA_DIR = Path(__file__).resolve().parent / "schema"
 SCHEMA_PATH = SCHEMA_DIR / "capability-manifest.schema.json"
-VENDORED_SHA256 = {"capability-manifest.schema.json": "6d0818650937010c12f5b33efcb1adf9246118f80d989ee7d1079fa8e6e24c5a"}
+VENDORED_SHA256 = {"capability-manifest.schema.json": "2e2ba26420a6d3b0332d2a486bd81b30e77fe69a4e3db5d787c3f89d70a0f6d2"}
 #: Namespaced extension key this repository authors in ``aipe.yaml``.
 MAGNETICS_EXTENSION_KEY = "aipe.magnetics"
 #: ``id`` of this repository's own manifest (``aipe.yaml``); evidence about "the repository manifest"
